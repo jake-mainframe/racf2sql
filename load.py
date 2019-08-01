@@ -36,6 +36,10 @@ def process(l, c):
         process_gpcsd(l, c)
     elif record_type == "0200":
         process_usbd(l, c)
+    elif record_type == "0201":
+        process_uscat(l, c)
+    elif record_type == "0202":
+        process_uscla(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -173,3 +177,19 @@ def process_usbd(l, c):
     )
     c.execute("INSERT INTO usbd VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0200) User Basic Data Record processed.")
+
+def process_uscat(l, c):
+    v = (
+        l[5:13],      #USCAT_NAME         User ID as taken from the profile name.
+        l[14:19],     #USCAT_CATEGORY     Category to which the user has access.
+    )
+    c.execute("INSERT INTO uscat VALUES(?, ?)", v)
+    print("INFO: (0201) User Categories Record processed.")
+
+def process_uscla(l, c):
+    v = (
+        l[5:13],      #USCLA_NAME         User ID as taken from the profile name.
+        l[14:22],     #USCLA_CLASS        A class in which the user is allowed to define profiles.
+    )
+    c.execute("INSERT INTO uscla VALUES(?, ?)", v)
+    print("INFO: (0202) User Classes Record processed.")

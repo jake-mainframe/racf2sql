@@ -14,6 +14,8 @@ def init_db(filename):
     init_gptme(c)
     init_gpcsd(c)
     init_usbd(c)
+    init_uscat(c)
+    init_uscla(c)
 
     conn.commit()
     conn.close()
@@ -47,3 +49,9 @@ def init_gpcsd(c):
 
 def init_usbd(c):
     c.execute('CREATE TABLE usbd (name TEXT, create_date TEXT, owner_id TEXT, adsp TEXT, special TEXT, oper TEXT, revoke TEXT, grpacc TEXT, pwd_interval INTEGER, pwd_date TEXT, programmer TEXT, defgrp_id TEXT, lastjob_time TEXT, lastjob_date TEXT, install_data TEXT, uaudit TEXT, auditor TEXT, nopwd TEXT, oidcard TEXT, pwd_gen INTEGER, revoke_cnt INTEGER, model TEXT, seclevel INTEGER, revoke_date TEXT, resume_date DATE, access_sun TEXT, access_mon TEXT, access_tue TEXT, access_wed TEXT, access_thu TEXT, access_fri TEXT, access_sat TEXT, start_time TEXT, end_time TEXT, seclabel TEXT, attribs TEXT, pwdenv_exists TEXT, pwd_asis TEXT, phr_date TEXT, phr_gen INTEGER, cert_seqn INTEGER, pphenv_exists TEXT)')
+
+def init_uscat(c):
+    c.execute('CREATE TABLE uscat (name TEXT, category INTEGER)')
+
+def init_uscla(c):
+    c.execute('CREATE TABLE uscla (name TEXT, class TEXT)')
