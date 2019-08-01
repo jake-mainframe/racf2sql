@@ -30,6 +30,8 @@ def process(l, c):
         process_gpomvs(l, c)
     elif record_type == "0130":
         process_gpovm(l, c)
+    elif record_type == "0140":
+        process_gptme(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -101,3 +103,11 @@ def process_gpovm(l, c):
     )
     c.execute("INSERT INTO gpovm VALUES(?, ?)", v)
     print("INFO: (0130) Group OVM Data Record processed.")
+
+def process_gptme(l, c):
+    v = (
+        l[5:13],      #GPTME_NAME         Group name as taken from the profile name.
+        l[14:260],    #GPTME_ROLE         Role profile name.
+    )
+    c.execute("INSERT INTO gptme VALUES(?, ?)", v)
+    print("INFO: (0141) Group TME Record processed.")

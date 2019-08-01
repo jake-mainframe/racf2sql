@@ -11,6 +11,7 @@ def init_db(filename):
     init_gpdfp(c)
     init_gpomvs(c)
     init_gpovm(c)
+    init_gptme(c)
 
     conn.commit()
     conn.close()
@@ -35,3 +36,6 @@ def init_gpomvs(c):
 
 def init_gpovm(c):
     c.execute('CREATE TABLE gpovm (name TEXT, gid TEXT)')
+
+def init_gptme(c):
+    c.execute('CREATE TABLE gptme (name TEXT, role TEXT)')
