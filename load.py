@@ -50,6 +50,8 @@ def process(l, c):
         process_usrsf(l, c)
     elif record_type == "0207":
         process_uscert(l, c)
+    elif record_type == "0208":
+        process_usnmap(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -275,3 +277,12 @@ def process_uscert(l, c):
     )
     c.execute("INSERT INTO uscert VALUES(?, ?, ?)", v)
     print("INFO: (0207) User Certificate Name Record processed.")
+
+def process_usnmap(l, c):
+    v = (
+        l[5:13],      #USNMAP_NAME        User ID as taken from the profile name.
+        l[14:46],     #USNMAP_LABEL       The label associated with this mapping.
+        l[47:293],    #USNMAP_MAP_NAME    The name of the DIGTNMAP profile associated with this user.
+    )
+    c.execute("INSERT INTO usnmap VALUES(?, ?, ?)", v)
+    print("INFO: (0208) User Associated Mappings Record processed.")
