@@ -40,6 +40,8 @@ def process(l, c):
         process_uscat(l, c)
     elif record_type == "0202":
         process_uscla(l, c)
+    elif record_type == "0203":
+        process_usgcon(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -193,3 +195,11 @@ def process_uscla(l, c):
     )
     c.execute("INSERT INTO uscla VALUES(?, ?)", v)
     print("INFO: (0202) User Classes Record processed.")
+
+def process_usgcon(l, c):
+    v = (
+        l[5:13],      #USGCON_NAME        User ID as taken from the profile name.
+        l[14:22],     #USGCON_GRP_ID      The group with which the user is associated.
+    )
+    c.execute("INSERT INTO usgcon VALUES(?, ?)", v)
+    print("INFO: (0203) User Group Connections Record processed.")
