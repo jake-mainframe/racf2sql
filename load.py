@@ -34,6 +34,8 @@ def process(l, c):
         process_gptme(l, c)
     elif record_type == "0151":
         process_gpcsd(l, c)
+    elif record_type == "0200":
+        process_usbd(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -123,3 +125,51 @@ def process_gpcsd(l, c):
     )
     c.execute("INSERT INTO gpcsd VALUES(?, ?, ?, ?)", v)
     print("INFO: (0151) Group CSDATA Custom Fields Record processed.")
+
+def process_usbd(l, c):
+    v = (
+        l[5:13],      #USBD_NAME          User ID as taken from the profile name.
+        l[14:24],     #USBD_CREATE_DATE   The date that the profile was created.
+        l[25:33],     #USBD_OWNER_ID      The user ID or group name that owns the profile.
+        l[34:38],     #USBD_ADSP          Does the user have the ADSP attribute?
+        l[39:43],     #USBD_SPECIAL       Does the user have the SPECIAL attribute?
+        l[44:48],     #USBD_OPER          Does the user have the OPERATIONS attribute?
+        l[49:53],     #USBD_REVOKE        Is the user REVOKEd?
+        l[54:58],     #USBD_GRPACC        Does the user have the GRPACC attribute?
+        l[59:62],     #USBD_PWD_INTERVAL  The number of days that the user's password can be used.
+        l[63:73],     #USBD_PWD_DATE      The date that the password was last changed.
+        l[74:94],     #USBD_PROGRAMMER    The name associated with the user ID.
+        l[95:103],    #USBD_DEFGRP_ID     The default group associated with the user.
+        l[104:112],   #USBD_LASTJOB_TIME  The last recorded time that the user entered the system.
+        l[113:123],   #USBD_LASTJOB_DATE  The last recorded date that the user entered the system.
+        l[124:379],   #USBD_INSTALL_DATA  Installation-defined data.
+        l[380:384],   #USBD_UAUDIT        Do all RACHECK and RACDEF SVCs cause logging?
+        l[385:389],   #USBD_AUDITOR       Does this user have the AUDITOR attribute?
+        l[390:394],   #USBD_NOPWD         "YES" indicates that this user ID can log on without a password using OID card. "NO" indicates that this user must specify a password. "PRO" indicates a protected user ID. "PHR" indicates that the user has a password phrase. See also z/OS Security Server RACF Security Administrator's Guide.
+        l[395:399],   #USBD_OIDCARD       Does this user have OIDCARD data?
+        l[400:403],   #USBD_PWD_GEN       The current password generation number.
+        l[404:407],   #USBD_REVOKE_CNT    The number of unsuccessful logon attempts.
+        l[408:452],   #USBD_MODEL         The data set model profile name.
+        l[453:456],   #USBD_SECLEVEL      The user's security level.
+        l[457:467],   #USBD_REVOKE_DATE   The date that the user will be revoked.
+        l[468:478],   #USBD_RESUME_DATE   The date that the user will be resumed.
+        l[479:483],   #USBD_ACCESS_SUN    Can the user access the system on Sunday?
+        l[484:488],   #USBD_ACCESS_MON    Can the user access the system on Monday?
+        l[489:493],   #USBD_ACCESS_TUE    Can the user access the system on Tuesday?
+        l[494:498],   #USBD_ACCESS_WED    Can the user access the system on Wednesday?
+        l[499:503],   #USBD_ACCESS_THU    Can the user access the system on Thursday?
+        l[504:508],   #USBD_ACCESS_FRI    Can the user access the system on Friday?
+        l[509:513],   #USBD_ACCESS_SAT    Can the user access the system on Saturday?
+        l[514:522],   #USBD_START_TIME    After what time can the user log on?
+        l[523:531],   #USBD_END_TIME      After what time can the user not log on?
+        l[532:540],   #USBD_SECLABEL      The user's default security label.
+        l[541:549],   #USBD_ATTRIBS       Other user attributes (RSTD for users with RESTRICTED attribute).
+        l[550:554],   #USBD_PWDENV_EXISTS Has a PKCS#7 envelope been created for the user's current password?
+        l[555:559],   #USBD_PWD_ASIS      Should the password be evaluated in the case entered?
+        l[560:570],   #USBD_PHR_DATE      The date the password phrase was last changed.
+        l[571:574],   #USBD_PHR_GEN       The current password phrase generation number.
+        l[575:585],   #USBD_CERT_SEQN     Sequence number that is incremented whenever a certificate for the user is added, deleted, or altered. The starting value might not be 0.
+        l[586:590],   #USBD_PPHENV_EXISTS Has the user's current password phrase been PKCS#7 enveloped for possible retrieval?
+    )
+    c.execute("INSERT INTO usbd VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0200) User Basic Data Record processed.")
