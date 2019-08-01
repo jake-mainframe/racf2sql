@@ -19,6 +19,7 @@ def init_db(filename):
     init_usgcon(c)
     init_usinstd(c)
     init_uscon(c)
+    init_usrsf(c)
 
     conn.commit()
     conn.close()
@@ -67,3 +68,6 @@ def init_usinstd(c):
 
 def init_uscon(c):
     c.execute('CREATE TABLE uscon (name TEXT, grp_id TEXT, connect_date TEXT, owner_id TEXT, lastcon_time TEXT, lastcon_date TEXT, uacc TEXT, init_cnt INTEGER, grp_adsp TEXT, grp_special TEXT, grp_oper TEXT, revoke TEXT, grp_acc TEXT, notermuacc TEXT, grp_audit TEXT, revoke_date TEXT, resume_date TEXT)')
+
+def init_usrsf(c):
+    c.execute('CREATE TABLE usrsf (name TEXT, targ_node TEXT, targ_user_id TEXT, version INTEGER, peer TEXT, managing TEXT, managed TEXT, remote_pend TEXT, local_pend TEXT, pwd_sync TEXT, rem_refusal TEXT,  define_date TEXT, define_time TEXT, accept_date TEXT, accept_time TEXT, creator_id TEXT)')

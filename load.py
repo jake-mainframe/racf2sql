@@ -46,6 +46,8 @@ def process(l, c):
         process_usinstd(l, c)
     elif record_type == "0205":
         process_uscon(l, c)
+    elif record_type == "0206":
+        process_usrsf(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -240,3 +242,25 @@ def process_uscon(l, c):
     )
     c.execute("INSERT INTO uscon VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0205) User Connect Data Record processed.")
+
+def process_usrsf(l, c):
+    v = (
+        l[5:13],      #USRSF_NAME         User ID as taken from the profile name.
+        l[14:22],     #USRSF_TARG_NODE    Target node name.
+        l[23:31],     #USRSF_TARG_USER_ID Target user ID.
+        l[32:35],     #USRSF_VERSION      Version of this record.
+        l[36:40],     #USRSF_PEER         Is this a peer user ID?
+        l[41:45],     #USRSF_MANAGING     Is USRSF_NAME managing this ID?
+        l[46:50],     #USRSF_MANAGED      Is USRSF_NAME being managed by this ID?
+        l[51:55],     #USRSF_REMOTE_PEND  Is this remote RACF association pending?
+        l[56:60],     #USRSF_LOCAL_PEND   Is this local RACF association pending?
+        l[61:65],     #USRSF_PWD_SYNC     Is there password synchronization with this user ID?
+        l[66:70],     #USRSF_REM_REFUSAL  Was a system error encountered on the remote system?
+        l[71:81],     #USRSF_DEFINE_DATE  GMT date stamp for when this record was defined.
+        l[82:97],     #USRSF_DEFINE_TIME  GMT time stamp for when this record was defined.
+        l[98:108],    #USRSF_ACCEPT_DATE  GMT date stamp when this association was approved or refused. Based on the REMOTE_REFUSAL bit setting.
+        l[109:124],   #USRSF_ACCEPT_TIME  GMT time stamp when this association was approved or refused. Based on the REMOTE_REFUSAL bit setting.
+        l[125:133],   #USRSF_CREATOR_ID   User ID who created this entry.
+    )
+    c.execute("INSERT INTO usrsf VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0206) User RRSF Data Record processed.")
