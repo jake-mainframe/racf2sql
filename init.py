@@ -5,9 +5,13 @@ def init_db(filename):
     c = conn.cursor()
 
     init_gpbd(c)
+    init_gpsgrp(c)
 
     conn.commit()
     conn.close()
 
 def init_gpbd(c):
     c.execute('CREATE TABLE gpbd (name TEXT, supgrp_id TEXT, create_date TEXT, owner_id TEXT, uacc TEXT, notermuacc INTEGER, install_data TEXT, model CHAR, universal INTEGER)')
+
+def init_gpsgrp(c):
+    c.execute('CREATE TABLE gpsgrp (name TEXT, subgrp_id TEXT)')

@@ -11,13 +11,17 @@ def load_racf(unload, db):
 
 def process(l, c):
     if len(l) < 4:
-      print(f"WARN: Unexpected short line:\n\t{l}")
+        print(f"WARN: Unexpected short line:\n\t{l}")
+        return
+
     record_type = l[0:4]
 
     if record_type == "0100":
-      process_gpbd(l, c)
-
-    print(f"WARN: Uncategorised/unknown line:\n\t{l}")
+        process_gpbd(l, c)
+    elif record_type == "0101":
+        process_gpsgrp(l, c)
+    else:
+        print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
 def process_gpbd(l, c):
     v = (
@@ -33,3 +37,11 @@ def process_gpbd(l, c):
     )
     c.execute("INSERT INTO gpbd VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0100) Group Basic Data Record processed.")
+
+def process_gpsgrp(l, c):
+    v = (
+        l[5:13],      #GPSGRP_NAME:       Group name as taken from the profile name.
+        l[14:22],     #GPSGRP_SUBGRP_ID:  The name of a subgroup within the group.
+    )
+    c.execute("INSERT INTO gpsgrp VALUES (?, ?)", v)
+    print("INFO: (0101) Group Subgroups Record processed.")
