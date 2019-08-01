@@ -16,12 +16,14 @@ def process(l, c):
 
     record_type = l[0:4]
 
-    if record_type == "0100":
+    if record_type ==   "0100":
         process_gpbd(l, c)
     elif record_type == "0101":
         process_gpsgrp(l, c)
     elif record_type == "0102":
         process_gpmem(l, c)
+    elif record_type == "0103":
+        process_gpinstd(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -56,3 +58,13 @@ def process_gpmem(l, c):
     )
     c.execute("INSERT INTO gpmem VALUES (?, ?, ?)", v)
     print("INFO: (0102) Group Members Record processed.")
+
+def process_gpinstd(l, c):
+    v = (
+        l[5:13],      #GPINSTD_NAME:      Group name as taken from the profile name.
+        l[14:22],     #GPINSTD_USR_NAME:  The name of the installation-defined field.
+        l[23:278],    #GPINSTD_USR_DATA:  The data for the installation-defined field.
+        l[279:287],   #GPINSTD_USR_FLAG:  The flag for the installation-defined field in the form X<cc>.
+    )
+    c.execute("INSERT INTO gpinstd VALUES(?, ?, ?, ?)", v)
+    print("INFO: (0103) Group Installation Data Record processed.")
