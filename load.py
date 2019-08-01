@@ -30,8 +30,10 @@ def process(l, c):
         process_gpomvs(l, c)
     elif record_type == "0130":
         process_gpovm(l, c)
-    elif record_type == "0140":
+    elif record_type == "0141":
         process_gptme(l, c)
+    elif record_type == "0151":
+        process_gpcsd(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -111,3 +113,13 @@ def process_gptme(l, c):
     )
     c.execute("INSERT INTO gptme VALUES(?, ?)", v)
     print("INFO: (0141) Group TME Record processed.")
+
+def process_gpcsd(l, c):
+    v = (
+        l[5:13],      #GPCSD_NAME         Group name.
+        l[14:18],     #GPCSD_TYPE         Data type for the custom field. Valid values are CHAR, FLAG, HEX, NUM.
+        l[19:51],     #GPCSD_KEY          Custom field keyword; maximum length = 8.
+        l[52:1152],   #GPCSD_VALUE        Custom field value.
+    )
+    c.execute("INSERT INTO gpcsd VALUES(?, ?, ?, ?)", v)
+    print("INFO: (0151) Group CSDATA Custom Fields Record processed.")

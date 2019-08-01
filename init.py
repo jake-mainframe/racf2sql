@@ -12,6 +12,7 @@ def init_db(filename):
     init_gpomvs(c)
     init_gpovm(c)
     init_gptme(c)
+    init_gpcsd(c)
 
     conn.commit()
     conn.close()
@@ -39,3 +40,6 @@ def init_gpovm(c):
 
 def init_gptme(c):
     c.execute('CREATE TABLE gptme (name TEXT, role TEXT)')
+
+def init_gpcsd(c):
+    c.execute('CREATE TABLE gpcsd (name TEXT, type TEXT, key TEXT, value TEXT)')
