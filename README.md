@@ -23,6 +23,8 @@ In order to amend the script to fix an issue with the processing of a record or 
 1. In `init.py` identify where the record type's `init_` function is called, and modify or create it appropriately. (Note: the records are ordered in the same way they appear in IBM's documentation for added readability.)
 2. In `load.py` identify where the record type's `process_` function is called, and modify or create it appropriately. (Note: the records and their fields are also ordered the same as in the documentation).
 
+**NOTE:** The substrings used in `load.py` have their start index **one lower than IBM's documentation**. This is intentional, and is the case because of differences between IBM's documentation and how Python processes substrings.
+
 The output of these scripts is intentionally designed to closely match the format of the DB itself (or at least of the unload file) to ensure there is minimal complexity.
 
 Specifically:
