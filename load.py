@@ -28,6 +28,8 @@ def process(l, c):
         process_gpdfp(l, c)
     elif record_type == "0120":
         process_gpomvs(l, c)
+    elif record_type == "0130":
+        process_gpovm(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -91,3 +93,11 @@ def process_gpomvs(l, c):
     )
     c.execute("INSERT INTO gpomvs VALUES(?, ?)", v)
     print("INFO: (0120) Group OMVS Data Record processed.")
+
+def process_gpovm(l, c):
+    v = (
+        l[5:13],      #GPOVM_NAME         Group name as taken from the profile name.
+        l[14:24],     #GPOVM_GID          OpenExtensions group identifier (GID) associated with the group name from the profile.
+    )
+    c.execute("INSERT INTO gpovm VALUES(?, ?)", v)
+    print("INFO: (0130) Group OVM Data Record processed.")
