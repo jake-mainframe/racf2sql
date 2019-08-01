@@ -20,6 +20,8 @@ def process(l, c):
         process_gpbd(l, c)
     elif record_type == "0101":
         process_gpsgrp(l, c)
+    elif record_type == "0102":
+        process_gpmem(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -45,3 +47,12 @@ def process_gpsgrp(l, c):
     )
     c.execute("INSERT INTO gpsgrp VALUES (?, ?)", v)
     print("INFO: (0101) Group Subgroups Record processed.")
+
+def process_gpmem(l, c):
+    v = (
+        l[5:13],      #GPMEM_NAME:        Group name as taken from the profile name.
+        l[14:22],     #GPMEM_MEMBER_ID:   A user ID within the group.
+        l[23:31],     #GPMEM_AUTH:        Indicates the authority that the user ID has within the group. Valid values are USE, CONNECT, JOIN, and CREATE.
+    )
+    c.execute("INSERT INTO gpmem VALUES (?, ?, ?)", v)
+    print("INFO: (0102) Group Members Record processed.")

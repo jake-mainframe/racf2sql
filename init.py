@@ -6,6 +6,7 @@ def init_db(filename):
 
     init_gpbd(c)
     init_gpsgrp(c)
+    init_gpmem(c)
 
     conn.commit()
     conn.close()
@@ -15,3 +16,6 @@ def init_gpbd(c):
 
 def init_gpsgrp(c):
     c.execute('CREATE TABLE gpsgrp (name TEXT, subgrp_id TEXT)')
+
+def init_gpmem(c):
+    c.execute('CREATE TABLE gpmem (name TEXT, member_id TEXT, auth TEXT)')
