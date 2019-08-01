@@ -48,6 +48,8 @@ def process(l, c):
         process_uscon(l, c)
     elif record_type == "0206":
         process_usrsf(l, c)
+    elif record_type == "0207":
+        process_uscert(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -264,3 +266,12 @@ def process_usrsf(l, c):
     )
     c.execute("INSERT INTO usrsf VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0206) User RRSF Data Record processed.")
+
+def process_uscert(l, c):
+    v = (
+        l[5:13],      #USCERT_NAME        User ID as taken from the profile name.
+        l[14:260],    #USCERT_CERT_NAME   Digital certificate name.
+        l[261:293],   #USCERT_CERTLABL    Digital certificate label.
+    )
+    c.execute("INSERT INTO uscert VALUES(?, ?, ?)", v)
+    print("INFO: (0207) User Certificate Name Record processed.")

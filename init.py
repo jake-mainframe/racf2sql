@@ -20,6 +20,7 @@ def init_db(filename):
     init_usinstd(c)
     init_uscon(c)
     init_usrsf(c)
+    init_uscert(c)
 
     conn.commit()
     conn.close()
@@ -71,3 +72,6 @@ def init_uscon(c):
 
 def init_usrsf(c):
     c.execute('CREATE TABLE usrsf (name TEXT, targ_node TEXT, targ_user_id TEXT, version INTEGER, peer TEXT, managing TEXT, managed TEXT, remote_pend TEXT, local_pend TEXT, pwd_sync TEXT, rem_refusal TEXT,  define_date TEXT, define_time TEXT, accept_date TEXT, accept_time TEXT, creator_id TEXT)')
+
+def init_uscert(c):
+    c.execute('CREATE TABLE uscert (name TEXT, cert_name TEXT, certlabl TEXT)')
