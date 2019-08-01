@@ -24,6 +24,8 @@ def process(l, c):
         process_gpmem(l, c)
     elif record_type == "0103":
         process_gpinstd(l, c)
+    elif record_type == "0110":
+        process_gpdfp(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -68,3 +70,14 @@ def process_gpinstd(l, c):
     )
     c.execute("INSERT INTO gpinstd VALUES(?, ?, ?, ?)", v)
     print("INFO: (0103) Group Installation Data Record processed.")
+
+def process_gpdfp(l, c):
+    v = (
+        l[5:13],      #GPDFP_NAME         Group name as taken from the profile name.
+        l[14:22],     #GPDFP_DATAAPPL     Default application name for the group.
+        l[23:31],     #GPDFP_DATACLAS     Default data class for the group.
+        l[32:40],     #GPDFP_MGMTCLAS     Default management class for the group.
+        l[41:49],     #GPDFP_STORCLAS     Default storage class for the group.
+    )
+    c.execute("INSERT INTO gpdfp VALUES(?, ?, ?, ?, ?)", v)
+    print("INFO: (0110) Group DFP Data Record processed.")
