@@ -9,6 +9,7 @@ def init_db(filename):
     init_gpmem(c)
     init_gpinstd(c)
     init_gpdfp(c)
+    init_gpomvs(c)
 
     conn.commit()
     conn.close()
@@ -27,3 +28,6 @@ def init_gpinstd(c):
 
 def init_gpdfp(c):
     c.execute('CREATE TABLE gpdfp (name TEXT, dataappl TEXT, dataclas TEXT, mgmtclas TEXT, storclas TEXT)')
+
+def init_gpomvs(c):
+    c.execute('CREATE TABLE gpomvs (name TEXT, gid TEXT)')

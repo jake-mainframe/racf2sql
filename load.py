@@ -26,6 +26,8 @@ def process(l, c):
         process_gpinstd(l, c)
     elif record_type == "0110":
         process_gpdfp(l, c)
+    elif record_type == "0120":
+        process_gpomvs(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -81,3 +83,11 @@ def process_gpdfp(l, c):
     )
     c.execute("INSERT INTO gpdfp VALUES(?, ?, ?, ?, ?)", v)
     print("INFO: (0110) Group DFP Data Record processed.")
+
+def process_gpomvs(l, c):
+    v = (
+        l[5:13],      #GPOMVS_NAME        Group name as taken from the profile name.
+        l[14:24],     #GPOMVS_GID         OMVS z/OS UNIX group identifier (GID) associated with the group name from the profile.
+    )
+    c.execute("INSERT INTO gpomvs VALUES(?, ?)", v)
+    print("INFO: (0120) Group OMVS Data Record processed.")
