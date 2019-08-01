@@ -42,6 +42,8 @@ def process(l, c):
         process_uscla(l, c)
     elif record_type == "0203":
         process_usgcon(l, c)
+    elif record_type == "0204":
+        process_usinstd(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -203,3 +205,13 @@ def process_usgcon(l, c):
     )
     c.execute("INSERT INTO usgcon VALUES(?, ?)", v)
     print("INFO: (0203) User Group Connections Record processed.")
+
+def process_usinstd(l, c):
+    v = (
+        l[5:13],      #USINSTD_NAME       User ID as taken from the profile name.
+        l[14:22],     #USINSTD_USR_NAME   The name of the installation-defined field.
+        l[23:278],    #USINSTD_USR_DATA   The data for the installation-defined field.
+        l[279:287],   #USINSTD_USR_FLAG   The flag for the installation-defined field in the form X<cc>.
+    )
+    c.execute("INSERT INTO usinstd VALUES(?, ?, ?, ?)", v)
+    print("INFO: (0204) User Installation Data Record processed.")

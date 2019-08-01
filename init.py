@@ -17,6 +17,7 @@ def init_db(filename):
     init_uscat(c)
     init_uscla(c)
     init_usgcon(c)
+    init_usinstd(c)
 
     conn.commit()
     conn.close()
@@ -59,3 +60,6 @@ def init_uscla(c):
 
 def init_usgcon(c):
     c.execute('CREATE TABLE usgcon (name TEXT, grp_id TEXT)')
+
+def init_usinstd(c):
+    c.execute('CREATE TABLE usinstd (name TEXT, usr_name TEXT, usr_data TEXT, usr_flag TEXT)')
