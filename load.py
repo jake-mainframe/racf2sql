@@ -44,6 +44,8 @@ def process(l, c):
         process_usgcon(l, c)
     elif record_type == "0204":
         process_usinstd(l, c)
+    elif record_type == "0205":
+        process_uscon(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -215,3 +217,26 @@ def process_usinstd(l, c):
     )
     c.execute("INSERT INTO usinstd VALUES(?, ?, ?, ?)", v)
     print("INFO: (0204) User Installation Data Record processed.")
+
+def process_uscon(l, c):
+    v = (
+        l[5:13],      #USCON_NAME         User ID as taken from the profile name.
+        l[14:22],     #USCON_GRP_ID       The group name.
+        l[23:33],     #USCON_CONNECT_DATE The date that the user was connected.
+        l[34:42],     #USCON_OWNER_ID     The owner of the user-group connection.
+        l[43:51],     #USCON_LASTCON_TIME Time that the user last connected to this group.
+        l[52:62],     #USCON_LASTCON_DATE Date that the user last connected to this group.
+        l[63:71],     #USCON_UACC         The default universal access authority for all new resources the user defines while connected to the specified group. Valid values are NONE, READ, UPDATE, CONTROL, and ALTER.
+        l[72:77],     #USCON_INIT_CNT     The number of RACINITs issued for this user/group combination.
+        l[78:82],     #USCON_GRP_ADSP     Does this user have the ADSP attribute in this group?
+        l[83:87],     #USCON_GRP_SPECIAL  Does this user have GROUP-SPECIAL in this group?
+        l[88:92],     #USCON_GRP_OPER     Does this user have GROUP-OPERATIONS in this group?
+        l[93:97],     #USCON_REVOKE       Is this user revoked?
+        l[98:102],    #USCON_GRP_ACC      Does this user have the GRPACC attribute?
+        l[103:107],   #USCON_NOTERMUACC   Does this user have the NOTERMUACC attribute in this group?
+        l[108:112],   #USCON_GRP_AUDIT    Does this user have the GROUP-AUDITOR attribute in this group?
+        l[113:123],   #USCON_REVOKE_DATE  The date that the user's connection to the group will be revoked.
+        l[123:134],   #USCON_RESUME_DATE  The date that the user's connection to the group will be resumed.
+    )
+    c.execute("INSERT INTO uscon VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0205) User Connect Data Record processed.")
