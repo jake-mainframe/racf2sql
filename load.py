@@ -72,6 +72,8 @@ def process(l, c):
         process_usopr(l, c)
     elif record_type == "0251":
         process_usoprp(l, c)
+    elif record_type == "0260":
+        process_uswrk(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -570,3 +572,19 @@ def process_usoprp(l, c):
     )
     c.execute("INSERT INTO usoprp VALUES(?, ?)", v)
     print("INFO: (0251) User OPERPARM Scope Record processed.")
+
+def process_uswrk(l, c):
+    v = (
+        l[5:13],      #USWRK_NAME         User ID as taken from the profile name.
+        l[14:74],     #USWRK_AREA_NAME    Area for delivery.
+        l[75:135],    #USWRK_BUILDING     Building for delivery.
+        l[136:196],   #USWRK_DEPARTMENT   Department for delivery.
+        l[197:257],   #USWRK_ROOM         Room for delivery.
+        l[258:318],   #USWRK_ADDR_LINE1   Address line 1.
+        l[319:379],   #USWRK_ADDR_LINE2   Address line 2.
+        l[380:440],   #USWRK_ADDR_LINE3   Address line 3.
+        l[441:501],   #USWRK_ADDR_LINE4   Address line 4.
+        l[502:757],   #USWRK_ACCOUNT      Account number.
+    )
+    c.execute("INSERT INTO uswrk VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0260) User WORKATTR Data Record processed.")

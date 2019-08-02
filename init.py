@@ -32,6 +32,7 @@ def init_db(filename):
     init_uslan(c)
     init_usopr(c)
     init_usoprp(c)
+    init_uswrk(c)
 
     conn.commit()
     conn.close()
@@ -119,3 +120,6 @@ def init_usopr(c):
 
 def init_usoprp(c):
     c.execute('CREATE TABLE usoprp (name TEXT, system TEXT)')
+
+def init_uswrk(c):
+    c.execute('CREATE TABLE uswrk (name TEXT, area_name TEXT, building TEXT, department TEXT, room TEXT, addr_line1 TEXT, addr_line2 TEXT, addr_line3 TEXT, addr_line4 TEXT, account TEXT)')
