@@ -92,6 +92,8 @@ def process(l, c):
         process_usnds(l, c)
     elif record_type == "02D0":
         process_uskerb(l, c)
+    elif record_type == "02E0":
+        process_usproxy(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -708,3 +710,12 @@ def process_uskerb(l, c):
     )
     c.execute("INSERT INTO uskerb VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (02D0) User KERB Data Record processed.")
+
+def process_usproxy(l, c):
+    v = (
+        l[5:13],      #USPROXY_NAME       RACF user name as taken from the profile name.
+        l[14:1037],   #USPROXY_LDAP_HOST  LDAP server URL.
+        l[1038:2061], #USPROXY_BIND_DN    LDAP BIND distinguished name.
+    )
+    c.execute("INSERT INTO usproxy VALUES(?, ?, ?)", v)
+    print("INFO: (02E0) User PROXY Record processed.")
