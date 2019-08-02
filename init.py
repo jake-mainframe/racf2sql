@@ -40,6 +40,7 @@ def init_db(filename):
     init_usdce(c)
     init_usovm(c)
     init_uslnot(c)
+    init_usnds(c)
 
     conn.commit()
     conn.close()
@@ -151,3 +152,6 @@ def init_usovm(c):
 
 def init_uslnot(c):
     c.execute('CREATE TABLE uslnot (name TEXT, sname TEXT)')
+
+def init_usnds(c):
+    c.execute('CREATE TABLE usnds (name TEXT, uname TEXT)')

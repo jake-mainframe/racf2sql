@@ -88,6 +88,8 @@ def process(l, c):
         process_usovm(l, c)
     elif record_type == "02B0":
         process_uslnot(l, c)
+    elif record_type == "02C0":
+        process_usnds(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -680,3 +682,11 @@ def process_uslnot(l, c):
     )
     c.execute("INSERT INTO uslnot VALUES(?, ?)", v)
     print("INFO: (02B0) User LNOTES Data Record processed.")
+
+def process_usnds(l, c):
+    v = (
+        l[5:13],      #USNDS_NAME         User ID as taken from the profile name.
+        l[14:260],    #USNDS_UNAME        NDS user name associated with the user ID.
+    )
+    c.execute("INSERT INTO usnds VALUES(?, ?)", v)
+    print("INFO: (02C0) User NDS Data Record processed.")
