@@ -56,6 +56,8 @@ def process(l, c):
         process_usdmap(l, c)
     elif record_type == "0210":
         process_usdfp(l, c)
+    elif record_type == "0220":
+        process_ustso(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -310,3 +312,24 @@ def process_usdfp(l, c):
     )
     c.execute("INSERT INTO usdfp VALUES(?, ?, ?, ?, ?)", v)
     print("INFO: (0210) User DFP Data Record processed.")
+
+def process_ustso(l, c):
+    v = (
+        l[5:13],      #USTSO_NAME         User ID as taken from the profile name.
+        l[14:54],     #USTSO_ACCOUNT      The default account number.
+        l[55:135],    #USTSO_COMMAND      The command issued at LOGON.
+        l[136:144],   #USTSO_DEST         The default destination identifier.
+        l[145:146],   #USTSO_HOLD_CLASS   The default hold class.
+        l[147:148],   #USTSO_JOB_CLASS    The default job class.
+        l[149:157],   #USTSO_LOGON_PROC   The default logon procedure.
+        l[158:168],   #USTSO_LOGON_SIZE   The default logon region size.
+        l[169:170],   #USTSO_MSG_CLASS    The default message class.
+        l[171:181],   #USTSO_LOGON_MAX    The maximum logon region size.
+        l[182:192],   #USTSO_PERF_GROUP   The performance group associated with the user.
+        l[193:194],   #USTSO_SYSOUT_CLASS The default sysout class.
+        l[195:203],   #USTSO_USER_DATA    The TSO user data, in hexadecimal in the form X<cccc>.
+        l[204:212],   #USTSO_UNIT_NAME    The default SYSDA device.
+        l[213:221],   #USTSO_SECLABEL     The default logon security label.
+    )
+    c.execute("INSERT INTO ustso VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0220) User TSO Data Record processed.")
