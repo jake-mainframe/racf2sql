@@ -90,6 +90,8 @@ def process(l, c):
         process_uslnot(l, c)
     elif record_type == "02C0":
         process_usnds(l, c)
+    elif record_type == "02D0":
+        process_uskerb(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -690,3 +692,19 @@ def process_usnds(l, c):
     )
     c.execute("INSERT INTO usnds VALUES(?, ?)", v)
     print("INFO: (02C0) User NDS Data Record processed.")
+
+def process_uskerb(l, c):
+    v = (
+        l[5:13],      #USKERB_NAME        RACF user name as taken from the profile.
+        l[14:254],    #USKERB_KERBNAME    The Kerberos principal name.
+        l[255:265],   #USKERB_MAX_LIFE    Maximum ticket life.
+        l[266:269],   #USKERB_KEY_VERS    Current key version.
+        l[270:274],   #USKERB_ENCRYPT_DES Is key encryption using DES enabled?
+        l[275:279],   #USKERB_ENCRYPT_DES3  Is key encryption using DES3 enabled?
+        l[280:284],   #USKERB_ENCRYPT_DESD  Is key encryption using DES with derivation enabled?
+        l[285:289],   #USKERB_ENCRPT_A128 Is key encryption using AES128 enabled?
+        l[290:294],   #USKERB_ENCRPT_A256 Is key encryption using AES256 enabled?
+        l[350:358],   #USKERB_KEY_FROM    Key source. Valid values are PASSWORD or PHRASE.
+    )
+    c.execute("INSERT INTO uskerb VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (02D0) User KERB Data Record processed.")

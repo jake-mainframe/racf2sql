@@ -41,6 +41,7 @@ def init_db(filename):
     init_usovm(c)
     init_uslnot(c)
     init_usnds(c)
+    init_uskerb(c)
 
     conn.commit()
     conn.close()
@@ -155,3 +156,6 @@ def init_uslnot(c):
 
 def init_usnds(c):
     c.execute('CREATE TABLE usnds (name TEXT, uname TEXT)')
+
+def init_uskerb(c):
+    c.execute('CREATE TABLE uskerb (name TEXT, kerbname TEXT, max_life INTEGER, key_vers INTEGER, encrypt_des TEXT, encrypt_des3 TEXT, encrypt_desd TEXT, encrypt_a128 TEXT, encrypt_a256 TEXT, key_from TEXT)')
