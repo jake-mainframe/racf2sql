@@ -80,6 +80,8 @@ def process(l, c):
         process_usnetv(l, c)
     elif record_type == "0281":
         process_usnopc(l, c)
+    elif record_type == "0282":
+        process_usndom(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -633,3 +635,11 @@ def process_usnopc(l, c):
     )
     c.execute("INSERT INTO usnopc VALUES (?, ?)", v)
     print("INFO: (0281) User OPCLASS Record processed.")
+
+def process_usndom(l, c):
+    v = (
+        l[5:13],      #USNDOM_NAME        User ID as taken from the profile name
+        l[14:19],     #USNDOM_DOMAINS     DOMAIN value.
+    )
+    c.execute("INSERT INTO usndom VALUES (?, ?)", v)
+    print("INFO: (0282) User DOMAINS Record processed.")
