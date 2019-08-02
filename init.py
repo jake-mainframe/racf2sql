@@ -25,6 +25,7 @@ def init_db(filename):
     init_usdmap(c)
     init_usdfp(c)
     init_ustso(c)
+    init_uscics(c)
 
     conn.commit()
     conn.close()
@@ -91,3 +92,6 @@ def init_usdfp(c):
 
 def init_ustso(c):
     c.execute('CREATE TABLE ustso (name TEXT, account TEXT, command TEXT, dest TEXT, hold_class TEXT, job_class TEXT, logon_proc TEXT, logon_size INTEGER, msg_class TEXT, logon_max INTEGER, perf_group INTEGER, sysout_class TEXT, user_data TEXT, unit_name TEXT, seclabel TEXT)')
+
+def init_uscics(c):
+    c.execute('CREATE TABLE uscics (name TEXT, opident TEXT, opprty INTEGER, noforce TEXT, timeout TEXT)')

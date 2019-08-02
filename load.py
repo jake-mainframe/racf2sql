@@ -58,6 +58,8 @@ def process(l, c):
         process_usdfp(l, c)
     elif record_type == "0220":
         process_ustso(l, c)
+    elif record_type == "0230":
+        process_uscics(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -333,3 +335,14 @@ def process_ustso(l, c):
     )
     c.execute("INSERT INTO ustso VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0220) User TSO Data Record processed.")
+
+def process_uscics(l, c):
+    v = (
+        l[5:13],      #USCICS_NAME        User ID as taken from the profile name.
+        l[14:17],     #USCICS_OPIDENT     The CICS operator identifier.
+        l[18:23],     #USCICS_OPPRTY      The CICS operator priority.
+        l[24:28],     #USCICS_NOFORCE     Is the extended recovery facility (XRF) NOFORCE option in effect?
+        l[29:34],     #USCICS_TIMEOUT     The terminal time-out value. Expressed in hh:mm
+    )
+    c.execute("INSERT INTO uscics VALUES(?, ?, ?, ?, ?)", v)
+    print("INFO: (0230) User CICS Data Record processed.")
