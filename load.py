@@ -84,6 +84,8 @@ def process(l, c):
         process_usndom(l, c)
     elif record_type == "0290":
         process_usdce(l, c)
+    elif record_type == "02A0":
+        process_usovm(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -657,3 +659,14 @@ def process_usdce(l, c):
     )
     c.execute("INSERT INTO usdce VALUES (?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0290) User DCE Data Record processed.")
+
+def process_usovm(l, c):
+    v = (
+        l[5:13],      #USOVM_NAME         User name as taken from the profile name.
+        l[14:24],     #USOVM_UID          User identifier (UID) associated with the user name from the profile.
+        l[25:1048],   #USOVM_HOME_PATH    Home path associated with the user identifier (UID).
+        l[1049:2072], #USOVM_PROGRAM      Default program associated with the user identifier (UID).
+        l[2073:3096], #USOVM_FSROOT       File system root for this user.
+    )
+    c.execute("INSERT INTO usovm VALUES (?, ?, ?, ?, ?)", v)
+    print("INFO: (02A0) User OVM Data Record processed.")
