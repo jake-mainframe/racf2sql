@@ -68,6 +68,8 @@ def process(l, c):
         process_usctsl(l, c)
     elif record_type == "0240":
         process_uslan(l, c)
+    elif record_type == "0250":
+        process_usopr(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -387,3 +389,174 @@ def process_uslan(l, c):
     )
     c.execute("INSERT INTO uslan VALUES(?, ?, ?)", v)
     print("INFO: (0240) User Language Data Record processed.")
+
+def process_usopr(l, c):
+    v = (
+        l[5:13],      #USOPR_NAME         User ID as taken from the profile name.
+        l[14:19],     #USOPR_STORAGE      The number of megabytes of storage that can be used for message queuing.
+        l[20:24],     #USOPR_MASTERAUTH   Does this user have MASTER console authority?
+        l[25:29],     #USOPR_ALLAUTH      Does this user have ALL console authority?
+        l[30:34],     #USOPR_SYSAUTH      Does this user have SYSAUTH console authority?
+        l[35:39],     #USOPR_IOAUTH       Does this user have I/O console authority?
+        l[40:44],     #USOPR_CONSAUTH     Does this user have CONS console authority?
+        l[45:49],     #USOPR_INFOAUTH     Does this user have INFO console authority?
+        l[50:54],     #USOPR_TIMESTAMP    Do console messages contain a timestamp?
+        l[55:59],     #USOPR_SYSTEMID     Do console messages contain a system ID?
+        l[60:64],     #USOPR_JOBID        Do console messages contain a job ID?
+        l[65:69],     #USOPR_MSGID        Do console messages contain a message ID?
+        l[70:74],     #USOPR_X            Are the job name and system name to be suppressed for messages issued from the JES3 global processor?
+        l[75:79],     #USOPR_WTOR         Does the console receive WTOR messages?
+        l[80:84],     #USOPR_IMMEDIATE    Does the console receive immediate messages?
+        l[85:89],     #USOPR_CRITICAL     Does the console receive critical event messages?
+        l[90:94],     #USOPR_EVENTUAL     Does the console receive eventual event messages?
+        l[95:99],     #USOPR_INFO         Does the console receive informational messages?
+        l[100:104],   #USOPR_NOBRODCAST   Are broadcast messages to this console suppressed?
+        l[105:109],   #USOPR_ALL          Does the console receive all messages?
+        l[110:114],   #USOPR_JOBNAMES     Are job names monitored?
+        l[115:119],   #USOPR_JOBNAMEST    Are job names monitored with timestamps displayed?
+        l[120:124],   #USOPR_SESS         Are user IDs displayed with each TSO initiation and termination?
+        l[125:129],   #USOPR_SESST        Are user IDs and timestamps displayed with each TSO initiation and termination?
+        l[130:134],   #USOPR_STATUS       Are data set names and dispositions displayed with each data set that is freed?
+        l[135:139],   #USOPR_ROUTECODE001 Is this console enabled for route code 001?
+        l[135:139],   #USOPR_ROUTECODE001 Is this console enabled for route code 001
+        l[140:144],   #USOPR_ROUTECODE002 Is this console enabled for route code 002
+        l[145:149],   #USOPR_ROUTECODE003 Is this console enabled for route code 003
+        l[150:154],   #USOPR_ROUTECODE004 Is this console enabled for route code 004
+        l[155:159],   #USOPR_ROUTECODE005 Is this console enabled for route code 005
+        l[160:164],   #USOPR_ROUTECODE006 Is this console enabled for route code 006
+        l[165:169],   #USOPR_ROUTECODE007 Is this console enabled for route code 007
+        l[170:174],   #USOPR_ROUTECODE008 Is this console enabled for route code 008
+        l[175:179],   #USOPR_ROUTECODE009 Is this console enabled for route code 009
+        l[180:184],   #USOPR_ROUTECODE010 Is this console enabled for route code 010
+        l[185:189],   #USOPR_ROUTECODE011 Is this console enabled for route code 011
+        l[190:194],   #USOPR_ROUTECODE012 Is this console enabled for route code 012
+        l[195:199],   #USOPR_ROUTECODE013 Is this console enabled for route code 013
+        l[200:204],   #USOPR_ROUTECODE014 Is this console enabled for route code 014
+        l[205:209],   #USOPR_ROUTECODE015 Is this console enabled for route code 015
+        l[210:214],   #USOPR_ROUTECODE016 Is this console enabled for route code 016
+        l[215:219],   #USOPR_ROUTECODE017 Is this console enabled for route code 017
+        l[220:224],   #USOPR_ROUTECODE018 Is this console enabled for route code 018
+        l[225:229],   #USOPR_ROUTECODE019 Is this console enabled for route code 019
+        l[230:234],   #USOPR_ROUTECODE020 Is this console enabled for route code 020
+        l[235:239],   #USOPR_ROUTECODE021 Is this console enabled for route code 021
+        l[240:244],   #USOPR_ROUTECODE022 Is this console enabled for route code 022
+        l[245:249],   #USOPR_ROUTECODE023 Is this console enabled for route code 023
+        l[250:254],   #USOPR_ROUTECODE024 Is this console enabled for route code 024
+        l[255:259],   #USOPR_ROUTECODE025 Is this console enabled for route code 025
+        l[260:264],   #USOPR_ROUTECODE026 Is this console enabled for route code 026
+        l[265:269],   #USOPR_ROUTECODE027 Is this console enabled for route code 027
+        l[270:274],   #USOPR_ROUTECODE028 Is this console enabled for route code 028
+        l[275:279],   #USOPR_ROUTECODE029 Is this console enabled for route code 029
+        l[280:284],   #USOPR_ROUTECODE030 Is this console enabled for route code 030
+        l[285:289],   #USOPR_ROUTECODE031 Is this console enabled for route code 031
+        l[290:294],   #USOPR_ROUTECODE032 Is this console enabled for route code 032
+        l[295:299],   #USOPR_ROUTECODE033 Is this console enabled for route code 033
+        l[300:304],   #USOPR_ROUTECODE034 Is this console enabled for route code 034
+        l[305:309],   #USOPR_ROUTECODE035 Is this console enabled for route code 035
+        l[310:314],   #USOPR_ROUTECODE036 Is this console enabled for route code 036
+        l[315:319],   #USOPR_ROUTECODE037 Is this console enabled for route code 037
+        l[320:324],   #USOPR_ROUTECODE038 Is this console enabled for route code 038
+        l[325:329],   #USOPR_ROUTECODE039 Is this console enabled for route code 039
+        l[330:334],   #USOPR_ROUTECODE040 Is this console enabled for route code 040
+        l[335:339],   #USOPR_ROUTECODE041 Is this console enabled for route code 041
+        l[340:344],   #USOPR_ROUTECODE042 Is this console enabled for route code 042
+        l[345:349],   #USOPR_ROUTECODE043 Is this console enabled for route code 043
+        l[350:354],   #USOPR_ROUTECODE044 Is this console enabled for route code 044
+        l[355:359],   #USOPR_ROUTECODE045 Is this console enabled for route code 045
+        l[360:364],   #USOPR_ROUTECODE046 Is this console enabled for route code 046
+        l[365:369],   #USOPR_ROUTECODE047 Is this console enabled for route code 047
+        l[370:374],   #USOPR_ROUTECODE048 Is this console enabled for route code 048
+        l[375:379],   #USOPR_ROUTECODE049 Is this console enabled for route code 049
+        l[380:384],   #USOPR_ROUTECODE050 Is this console enabled for route code 050
+        l[385:389],   #USOPR_ROUTECODE051 Is this console enabled for route code 051
+        l[390:394],   #USOPR_ROUTECODE052 Is this console enabled for route code 052
+        l[395:399],   #USOPR_ROUTECODE053 Is this console enabled for route code 053
+        l[400:404],   #USOPR_ROUTECODE054 Is this console enabled for route code 054
+        l[405:409],   #USOPR_ROUTECODE055 Is this console enabled for route code 055
+        l[410:414],   #USOPR_ROUTECODE056 Is this console enabled for route code 056
+        l[415:419],   #USOPR_ROUTECODE057 Is this console enabled for route code 057
+        l[420:424],   #USOPR_ROUTECODE058 Is this console enabled for route code 058
+        l[425:429],   #USOPR_ROUTECODE059 Is this console enabled for route code 059
+        l[430:434],   #USOPR_ROUTECODE060 Is this console enabled for route code 060
+        l[435:439],   #USOPR_ROUTECODE061 Is this console enabled for route code 061
+        l[440:444],   #USOPR_ROUTECODE062 Is this console enabled for route code 062
+        l[445:449],   #USOPR_ROUTECODE063 Is this console enabled for route code 063
+        l[450:454],   #USOPR_ROUTECODE064 Is this console enabled for route code 064
+        l[455:459],   #USOPR_ROUTECODE065 Is this console enabled for route code 065
+        l[460:464],   #USOPR_ROUTECODE066 Is this console enabled for route code 066
+        l[465:469],   #USOPR_ROUTECODE067 Is this console enabled for route code 067
+        l[470:474],   #USOPR_ROUTECODE068 Is this console enabled for route code 068
+        l[475:479],   #USOPR_ROUTECODE069 Is this console enabled for route code 069
+        l[480:484],   #USOPR_ROUTECODE070 Is this console enabled for route code 070
+        l[485:489],   #USOPR_ROUTECODE071 Is this console enabled for route code 071
+        l[490:494],   #USOPR_ROUTECODE072 Is this console enabled for route code 072
+        l[495:499],   #USOPR_ROUTECODE073 Is this console enabled for route code 073
+        l[500:504],   #USOPR_ROUTECODE074 Is this console enabled for route code 074
+        l[505:509],   #USOPR_ROUTECODE075 Is this console enabled for route code 075
+        l[510:514],   #USOPR_ROUTECODE076 Is this console enabled for route code 076
+        l[515:519],   #USOPR_ROUTECODE077 Is this console enabled for route code 077
+        l[520:524],   #USOPR_ROUTECODE078 Is this console enabled for route code 078
+        l[525:529],   #USOPR_ROUTECODE079 Is this console enabled for route code 079
+        l[530:534],   #USOPR_ROUTECODE080 Is this console enabled for route code 080
+        l[535:539],   #USOPR_ROUTECODE081 Is this console enabled for route code 081
+        l[540:544],   #USOPR_ROUTECODE082 Is this console enabled for route code 082
+        l[545:549],   #USOPR_ROUTECODE083 Is this console enabled for route code 083
+        l[550:554],   #USOPR_ROUTECODE084 Is this console enabled for route code 084
+        l[555:559],   #USOPR_ROUTECODE085 Is this console enabled for route code 085
+        l[560:564],   #USOPR_ROUTECODE086 Is this console enabled for route code 086
+        l[565:569],   #USOPR_ROUTECODE087 Is this console enabled for route code 087
+        l[570:574],   #USOPR_ROUTECODE088 Is this console enabled for route code 088
+        l[575:579],   #USOPR_ROUTECODE089 Is this console enabled for route code 089
+        l[580:584],   #USOPR_ROUTECODE090 Is this console enabled for route code 090
+        l[585:589],   #USOPR_ROUTECODE091 Is this console enabled for route code 091
+        l[590:594],   #USOPR_ROUTECODE092 Is this console enabled for route code 092
+        l[595:599],   #USOPR_ROUTECODE093 Is this console enabled for route code 093
+        l[600:604],   #USOPR_ROUTECODE094 Is this console enabled for route code 094
+        l[605:609],   #USOPR_ROUTECODE095 Is this console enabled for route code 095
+        l[610:614],   #USOPR_ROUTECODE096 Is this console enabled for route code 096
+        l[615:619],   #USOPR_ROUTECODE097 Is this console enabled for route code 097
+        l[620:624],   #USOPR_ROUTECODE098 Is this console enabled for route code 098
+        l[625:629],   #USOPR_ROUTECODE099 Is this console enabled for route code 099
+        l[630:634],   #USOPR_ROUTECODE100 Is this console enabled for route code 100
+        l[635:639],   #USOPR_ROUTECODE101 Is this console enabled for route code 101
+        l[640:644],   #USOPR_ROUTECODE102 Is this console enabled for route code 102
+        l[645:649],   #USOPR_ROUTECODE103 Is this console enabled for route code 103
+        l[650:654],   #USOPR_ROUTECODE104 Is this console enabled for route code 104
+        l[655:659],   #USOPR_ROUTECODE105 Is this console enabled for route code 105
+        l[660:664],   #USOPR_ROUTECODE106 Is this console enabled for route code 106
+        l[665:669],   #USOPR_ROUTECODE107 Is this console enabled for route code 107
+        l[670:674],   #USOPR_ROUTECODE108 Is this console enabled for route code 108
+        l[675:679],   #USOPR_ROUTECODE109 Is this console enabled for route code 109
+        l[680:684],   #USOPR_ROUTECODE110 Is this console enabled for route code 110
+        l[685:689],   #USOPR_ROUTECODE111 Is this console enabled for route code 111
+        l[690:694],   #USOPR_ROUTECODE112 Is this console enabled for route code 112
+        l[695:699],   #USOPR_ROUTECODE113 Is this console enabled for route code 113
+        l[700:704],   #USOPR_ROUTECODE114 Is this console enabled for route code 114
+        l[705:709],   #USOPR_ROUTECODE115 Is this console enabled for route code 115
+        l[710:714],   #USOPR_ROUTECODE116 Is this console enabled for route code 116
+        l[715:719],   #USOPR_ROUTECODE117 Is this console enabled for route code 117
+        l[720:724],   #USOPR_ROUTECODE118 Is this console enabled for route code 118
+        l[725:729],   #USOPR_ROUTECODE119 Is this console enabled for route code 119
+        l[730:734],   #USOPR_ROUTECODE120 Is this console enabled for route code 120
+        l[735:739],   #USOPR_ROUTECODE121 Is this console enabled for route code 121
+        l[740:744],   #USOPR_ROUTECODE122 Is this console enabled for route code 122
+        l[745:749],   #USOPR_ROUTECODE123 Is this console enabled for route code 123
+        l[750:754],   #USOPR_ROUTECODE124 Is this console enabled for route code 124
+        l[755:759],   #USOPR_ROUTECODE125 Is this console enabled for route code 125
+        l[760:764],   #USOPR_ROUTECODE126 Is this console enabled for route code 126
+        l[765:769],   #USOPR_ROUTECODE127 Is this console enabled for route code 127
+        l[770:774],   #USOPR_ROUTECODE128 Is this console enabled for route code 128
+        l[775:783],   #USOPR_LOGCMDRESP   Specifies the logging of command responses received by the extended operator. Valid values are SYSTEM, NO, and blank.
+        l[784:788],   #USOPR_MIGRATIONID  Is this extended operator to receive a migration ID?
+        l[789:797],   #USOPR_DELOPERMSG   Does this extended operator receive delete operator messages? Valid values are NORMAL, ALL, and NONE.
+        l[798:806],   #USOPR_RETRIEVE_KEY Specifies a retrieval key used for searching. A null value is indicated by NONE.
+        l[807:815],   #USOPR_CMDSYS       The name of the system that the extended operator is connected to for command processing.
+        l[816:820],   #USOPR_UD           Is this operator to receive undeliverable messages?
+        l[821:829],   #USOPR_ALTGRP_ID    The default group associated with this operator.
+        l[830:834],   #USOPR_AUTO         Is this operator to receive messages automated within the sysplex?
+        l[835:839],   #USOPR_HC           Is this operator to receive messages that are directed to hardcopy?
+        l[840:844],   #USOPR_INT          Is this operator to receive messages that are directed to console ID zero?
+        l[845:849],   #USOPR_UNKN         Is this operator to receive messages which are directed to unknown console IDs?
+    )
+    c.execute("INSERT INTO usopr VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0250) User OPERPARM Data Record processed.")
