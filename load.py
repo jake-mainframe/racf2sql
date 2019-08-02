@@ -64,6 +64,8 @@ def process(l, c):
         process_uscopc(l, c)
     elif record_type == "0232":
         process_uscrsl(l, c)
+    elif record_type == "0233":
+        process_usctsl(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -366,3 +368,11 @@ def process_uscrsl(l, c):
     )
     c.execute("INSERT INTO uscrsl VALUES(?, ?)", v)
     print("INFO: (0232) User CICS RSL Keys Record processed.")
+
+def process_usctsl(l, c):
+    v = (
+        l[5:13],      #USCTSL_NAME        User ID as taken from the profile name.
+        l[14:19],     #USCTSL_KEY         TSL key number.
+    )
+    c.execute("INSERT INTO usctsl VALUES(?, ?)", v)
+    print("INFO: (0233) User CICS TSL Keys Record processed.")
