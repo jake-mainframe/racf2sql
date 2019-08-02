@@ -86,6 +86,8 @@ def process(l, c):
         process_usdce(l, c)
     elif record_type == "02A0":
         process_usovm(l, c)
+    elif record_type == "02B0":
+        process_uslnot(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -670,3 +672,11 @@ def process_usovm(l, c):
     )
     c.execute("INSERT INTO usovm VALUES (?, ?, ?, ?, ?)", v)
     print("INFO: (02A0) User OVM Data Record processed.")
+
+def process_uslnot(l, c):
+    v = (
+        l[5:13],      #USLNOT_NAME        User ID as taken from the profile name.
+        l[14:78],     #USLNOT_SNAME       LNOTES short name associated with the user ID.
+    )
+    c.execute("INSERT INTO uslnot VALUES(?, ?)", v)
+    print("INFO: (02B0) User LNOTES Data Record processed.")
