@@ -60,6 +60,8 @@ def process(l, c):
         process_ustso(l, c)
     elif record_type == "0230":
         process_uscics(l, c)
+    elif record_type == "0231":
+        process_uscopc(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -346,3 +348,11 @@ def process_uscics(l, c):
     )
     c.execute("INSERT INTO uscics VALUES(?, ?, ?, ?, ?)", v)
     print("INFO: (0230) User CICS Data Record processed.")
+
+def process_uscopc(l, c):
+    v = (
+        l[5:13],      #USCOPC_NAME        User ID as taken from the profile name.
+        l[14:17],     #USCOPC_OPCLASS     The class associated with the CICS operator.
+    )
+    c.execute("INSERT INTO uscopc VALUES(?, ?)", v)
+    print("INFO (0231) User CICS Operator Classes Record processed.")
