@@ -98,6 +98,8 @@ def process(l, c):
         process_useim(l, c)
     elif record_type == "02G1":
         process_uscsd(l, c)
+    elif record_type == "0400":
+        process_dsbd(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -741,3 +743,39 @@ def process_uscsd(l, c):
     )
     c.execute("INSERT INTO uscsd VALUES(?, ?)", v)
     print("INFO: (02G1) User CSDATA Custom Fields Record processed.")
+
+def process_dsbd(l, c):
+    v = (
+        l[5:49],      #DSBD_NAME          Data set name as taken from the profile name.
+        l[50:56],     #DSBD_VOL           Volume upon which this data set resides. Blank if the profile is generic, and *MODEL if the profile is a model profile.
+        l[57:61],     #DSBD_GENERIC       Is this a generic profile?
+        l[62:72],     #DSBD_CREATE_DATE   Date the profile was created.
+        l[73:81],     #DSBD_OWNER_ID      The user ID or group name that owns the profile.
+        l[82:92],     #DSBD_LASTREF_DATE  The date that the data set was last referenced.
+        l[93:103],    #DSBD_LASTCHG_DATE  The date that the data set was last changed.
+        l[104:109],   #DSBD_ALTER_CNT     The number of times that the data set was accessed with ALTER authority.
+        l[110:115],   #DSBD_CONTROL_CNT   The number of times that the data set was accessed with CONTROL authority.
+        l[116:121],   #DSBD_UPDATE_CNT    The number of times that the data set was accessed with UPDATE authority.
+        l[122:127],   #DSBD_READ_CNT      The number of times that the data set was accessed with READ authority.
+        l[128:136],   #DSBD_UACC          The universal access of this data set. Valid values are NONE, EXECUTE, READ, UPDATE, CONTROL, and ALTER.
+        l[137:141],   #DSBD_GRPDS         Is this a group data set?
+        l[142:150],   #DSBD_AUDIT_LEVEL   Indicates the level of resource-owner-specified auditing that is performed. Valid values are ALL, SUCCESS, FAIL, and NONE.
+        l[151:159],   #DSBD_GRP_ID        The connect group of the user who created this data set.
+        l[160:168],   #DSBD_DS_TYPE       The type of the data set. Valid values are VSAM, NONVSAM, TAPE, and MODEL.
+        l[169:172],   #DSBD_LEVEL         The level of the data set.
+        l[173:181],   #DSBD_DEVICE_NAME   The EBCDIC name of the device type on which the data set resides.
+        l[182:190],   #DSBD_GAUDIT_LEVEL  Indicates the level of auditor-specified auditing that is performed. Valid values are ALL, SUCCESS, FAIL, and NONE.
+        l[191:446],   #DSBD_INSTALL_DATA  Installation-defined data.
+        l[447:455],   #DSBD_AUDIT_OKQUAL  The resource-owner-specified successful access audit qualifier. This is set to blanks if AUDIT_LEVEL is NONE. Otherwise, it is set to either READ, UPDATE, CONTROL, or ALTER.
+        l[456:464],   #DSBD_AUDIT_FAQUAL  The resource-owner-specified failing access audit qualifier. This is set to blanks if AUDIT_LEVEL is NONE. Otherwise, it is set to either READ, UPDATE, CONTROL, or ALTER.
+        l[465:473],   #DSBD_GAUDIT_OKQUAL The auditor-specified successful access audit qualifier. This is set to blanks if GAUDIT_LEVEL is NONE. Otherwise, it is set to either READ, UPDATE, CONTROL, or ALTER.
+        l[474:482],   #DSBD_GAUDIT_FAQUAL The auditor-specified failing access audit qualifier. This is set to blanks if GAUDIT_LEVEL is NONE. Otherwise, it is set to either READ, UPDATE, CONTROL, or ALTER.
+        l[483:487],   #DSBD_WARNING       Does this data set have the WARNING attribute?
+        l[488:491],   #DSBD_SECLEVEL      The data set security level.
+        l[492:500],   #DSBD_NOTIFY_ID     User ID that is notified when violations occur.
+        l[501:506],   #DSBD_RETENTION     Retention period of the data set.
+        l[507:511],   #DSBD_ERASE         For a DASD data set, is this data set scratched when the data set is deleted?
+        l[512:520],   #DSBD_SECLABEL      Security label of the data set.
+    )
+    c.execute("INSERT INTO dsbd VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0400) Data Set Basic Data Record processed.")
