@@ -78,6 +78,8 @@ def process(l, c):
         process_usomvs(l, c)
     elif record_type == "0280":
         process_usnetv(l, c)
+    elif record_type == "0281":
+        process_usnopc(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -623,3 +625,11 @@ def process_usnetv(l, c):
     )
     c.execute("INSERT INTO usnetv VALUES (?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0280) User NETVIEW Segment Record processed.")
+
+def process_usnopc(l, c):
+    v = (
+        l[5:13],      #USNOPC_NAME        User ID as taken from the profile name
+        l[14:19],     #USNOPC_OPCLASS     OPCLASS value from 1 to 2040
+    )
+    c.execute("INSERT INTO usnopc VALUES (?, ?)", v)
+    print("INFO: (0281) User OPCLASS Record processed.")

@@ -35,6 +35,7 @@ def init_db(filename):
     init_uswrk(c)
     init_usomvs(c)
     init_usnetv(c)
+    init_usnopc(c)
 
     conn.commit()
     conn.close()
@@ -131,3 +132,6 @@ def init_usomvs(c):
 
 def init_usnetv(c):
     c.execute('CREATE TABLE usnetv (name TEXT, ic TEXT, consname TEXT, ctl TEXT, msgrecvr TEXT, ngfadmn TEXT, ngmfvspn TEXT)')
+
+def init_usnopc(c):
+    c.execute('CREATE TABLE usnopc (name TEXT, opclass INTEGER)')
