@@ -37,6 +37,7 @@ def init_db(filename):
     init_usnetv(c)
     init_usnopc(c)
     init_usndom(c)
+    init_usdce(c)
 
     conn.commit()
     conn.close()
@@ -139,3 +140,6 @@ def init_usnopc(c):
 
 def init_usndom(c):
     c.execute('CREATE TABLE usndom (name TEXT, domains TEXT)')
+
+def init_usdce(c):
+    c.execute('CREATE TABLE usdce (name TEXT, uuid TEXT, dce_name TEXT, homecell TEXT, homeuuid TEXT, autologin TEXT)')

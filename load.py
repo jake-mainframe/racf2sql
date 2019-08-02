@@ -82,6 +82,8 @@ def process(l, c):
         process_usnopc(l, c)
     elif record_type == "0282":
         process_usndom(l, c)
+    elif record_type == "0290":
+        process_usdce(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -643,3 +645,15 @@ def process_usndom(l, c):
     )
     c.execute("INSERT INTO usndom VALUES (?, ?)", v)
     print("INFO: (0282) User DOMAINS Record processed.")
+
+def process_usdce(l, c):
+    v = (
+        l[5:13],      #USDCE_NAME         RACF user name as taken from the profile name.
+        l[14:50],     #USDCE_UUID         DCE UUID associated with the user name from the profile.
+        l[51:1074],   #USDCE_DCE_NAME     DCE principal name associated with this user.
+        l[1075:2098], #USDCE_HOMECELL     Home cell name.
+        l[2099:2135], #USDCE_HOMEUUID     Home cell UUID.
+        l[2136:2140], #USDCE_AUTOLOGIN    Is this user eligible for an automatic DCE login?
+    )
+    c.execute("INSERT INTO usdce VALUES (?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0290) User DCE Data Record processed.")
