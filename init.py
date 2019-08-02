@@ -29,6 +29,7 @@ def init_db(filename):
     init_uscopc(c)
     init_uscrsl(c)
     init_usctsl(c)
+    init_uslan(c)
 
     conn.commit()
     conn.close()
@@ -107,3 +108,6 @@ def init_uscrsl(c):
 
 def init_usctsl(c):
     c.execute('CREATE TABLE usctsl (name TEXT, key INTEGER)')
+
+def init_uslan(c):
+    c.execute('CREATE TABLE uslan (name TEXT, _primary TEXT, _secondary TEXT)')

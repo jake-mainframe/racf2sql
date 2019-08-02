@@ -66,6 +66,8 @@ def process(l, c):
         process_uscrsl(l, c)
     elif record_type == "0233":
         process_usctsl(l, c)
+    elif record_type == "0240":
+        process_uslan(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -376,3 +378,12 @@ def process_usctsl(l, c):
     )
     c.execute("INSERT INTO usctsl VALUES(?, ?)", v)
     print("INFO: (0233) User CICS TSL Keys Record processed.")
+
+def process_uslan(l, c):
+    v = (
+        l[5:13],      #USLAN_NAME         User ID as taken from the profile name.
+        l[14:17],     #USLAN_PRIMARY      The primary language for the user.
+        l[18:21],     #USLAN_SECONDARY    The secondary language for the user.
+    )
+    c.execute("INSERT INTO uslan VALUES(?, ?, ?)", v)
+    print("INFO: (0240) User Language Data Record processed.")

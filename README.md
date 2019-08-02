@@ -31,4 +31,4 @@ Specifically:
 - Each table name is the same as the record field prefix for that table in IBM's docs.
 - Each column nane is the same as the name of the field in IBM's docs, without the table prefix.
 
-So, if IBM defined a record type with a field called `ASDF_POTATO`, then that field would go into column `potato` in table `asdf`. This hopefully means that users can mostly just use IBM's documentation to figure out what queries they want to make.
+So, if IBM defined a record type with a field called `ASDF_POTATO`, then that field would go into column `potato` in table `asdf`. This hopefully means that users can mostly just use IBM's documentation to figure out what queries they want to make. The only exception is column names like `primary` which get an underscore prefixed (e.g. becomes `_primary`) so as to avoid conflicts with SQL keywords.
