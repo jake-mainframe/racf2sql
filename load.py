@@ -52,6 +52,8 @@ def process(l, c):
         process_uscert(l, c)
     elif record_type == "0208":
         process_usnmap(l, c)
+    elif record_type == "0209":
+        process_usdmap(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -286,3 +288,12 @@ def process_usnmap(l, c):
     )
     c.execute("INSERT INTO usnmap VALUES(?, ?, ?)", v)
     print("INFO: (0208) User Associated Mappings Record processed.")
+
+def process_usdmap(l, c):
+    v = (
+        l[5:13],      #USDMAP_NAME        User ID as taken from the profile name.
+        l[14:46],     #USDMAP_LABEL       The label associated with this mapping.
+        l[47:293],    #USDMAP_MAP_NAME    The name of the IDIDMAP profile associated with this user. Note: This value is stored in the RACF database in UTF-8 format. If possible, database unload changes this value to the EBCDIC format. If not possible, hexadecimal values are produced.
+    )
+    c.execute("INSERT INTO usdmap VALUES(?, ?, ?)", v)
+    print("INFO: (0209) User Associated Distributed Mappings Record processed.")

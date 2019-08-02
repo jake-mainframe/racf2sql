@@ -22,6 +22,7 @@ def init_db(filename):
     init_usrsf(c)
     init_uscert(c)
     init_usnmap(c)
+    init_usdmap(c)
 
     conn.commit()
     conn.close()
@@ -79,3 +80,6 @@ def init_uscert(c):
 
 def init_usnmap(c):
     c.execute('CREATE TABLE usnmap (name TEXT, label TEXT, map_name TEXT)')
+
+def init_usdmap(c):
+    c.execute('CREATE TABLE usdmap (name TEXT, label TEXT, map_name TEXT)')
