@@ -62,6 +62,8 @@ def process(l, c):
         process_uscics(l, c)
     elif record_type == "0231":
         process_uscopc(l, c)
+    elif record_type == "0232":
+        process_uscrsl(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -355,4 +357,12 @@ def process_uscopc(l, c):
         l[14:17],     #USCOPC_OPCLASS     The class associated with the CICS operator.
     )
     c.execute("INSERT INTO uscopc VALUES(?, ?)", v)
-    print("INFO (0231) User CICS Operator Classes Record processed.")
+    print("INFO: (0231) User CICS Operator Classes Record processed.")
+
+def process_uscrsl(l, c):
+    v = (
+        l[5:13],      #USCRSL_NAME        User ID as taken from the profile name.
+        l[14:19],     #USCRSL_KEY         RSL key number.
+    )
+    c.execute("INSERT INTO uscrsl VALUES(?, ?)", v)
+    print("INFO: (0232) User CICS RSL Keys Record processed.")
