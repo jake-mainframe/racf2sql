@@ -33,6 +33,7 @@ def init_db(filename):
     init_usopr(c)
     init_usoprp(c)
     init_uswrk(c)
+    init_usomvs(c)
 
     conn.commit()
     conn.close()
@@ -123,3 +124,6 @@ def init_usoprp(c):
 
 def init_uswrk(c):
     c.execute('CREATE TABLE uswrk (name TEXT, area_name TEXT, building TEXT, department TEXT, room TEXT, addr_line1 TEXT, addr_line2 TEXT, addr_line3 TEXT, addr_line4 TEXT, account TEXT)')
+
+def init_usomvs(c):
+    c.execute('CREATE TABLE usomvs (name TEXT, uid TEXT, home_path TEXT, program TEXT, cputimemax INTEGER, assizemax INTEGER, fileprocmax INTEGER, procusermax INTEGER, threadsmax INTEGER, mmapareamax INTEGER, memlimit TEXT, shmemax TEXT)')

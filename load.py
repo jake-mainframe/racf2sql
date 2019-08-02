@@ -74,6 +74,8 @@ def process(l, c):
         process_usoprp(l, c)
     elif record_type == "0260":
         process_uswrk(l, c)
+    elif record_type == "0270":
+        process_usomvs(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -588,3 +590,21 @@ def process_uswrk(l, c):
     )
     c.execute("INSERT INTO uswrk VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0260) User WORKATTR Data Record processed.")
+
+def process_usomvs(l, c):
+    v = (
+        l[5:13],      #USOMVS_NAME        User name as taken from the profile name.
+        l[14:24],     #USOMVS_UID         z/OS UNIX user identifier (UID) associated with the user name from the profile.
+        l[25:1048],   #USOMVS_HOME_PATH   HOME PATH associated with the z/OS UNIX user identifier (UID).
+        l[1049:2072], #USOMVS_PROGRAM     Default Program associated with the z/OS UNIX user identifier (UID).
+        l[2073:2083], #USOMVS_CPUTIMEMAX  Maximum CPU time associated with the UID.
+        l[2084:2094], #USOMVS_ASSIZEMAX   Maximum address space size associated with the UID.
+        l[2095:2105], #USOMVS_FILEPROCMAX Maximum active or open files associated with the UID.
+        l[2106:2116], #USOMVS_PROCUSERMAX Maximum number of processes associated with the UID.
+        l[2117:2127], #USOMVS_THREADSMAX  Maximum number of threads associated with the UID.
+        l[2128:2138], #USOMVS_MMAPAREAMAX Maximum mappable storage amount associated with the UID.
+        l[2139:2148], #USOMVS_MEMLIMIT    Maximum size of non-shared memory
+        l[2149:2158], #USOMVS_SHMEMAX     Maximum size of shared memory
+    )
+    c.execute("INSERT INTO usomvs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0270) User OMVS Data Record processed.")
