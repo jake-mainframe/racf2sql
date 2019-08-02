@@ -76,6 +76,8 @@ def process(l, c):
         process_uswrk(l, c)
     elif record_type == "0270":
         process_usomvs(l, c)
+    elif record_type == "0280":
+        process_usnetv(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -608,3 +610,16 @@ def process_usomvs(l, c):
     )
     c.execute("INSERT INTO usomvs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0270) User OMVS Data Record processed.")
+
+def process_usnetv(l, c):
+    v = (
+        l[5:13],      #USNETV_NAME        User ID as taken from profile name
+        l[14:269],    #USNETV_IC          Command list processed at logon
+        l[270:278],   #USNETV_CONSNAME    Default console name
+        l[279:287],   #USNETV_CTL         CTL value: GENERAL, GLOBAL, or SPECIFIC
+        l[288:292],   #USNETV_MSGRECVR    Eligible to receive unsolicited messages?
+        l[293:297],   #USNETV_NGMFADMN    Authorized to NetView graphic monitoring facility?
+        l[299:306],   #USNETV_NGMFVSPN    Value of view span options
+    )
+    c.execute("INSERT INTO usnetv VALUES (?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0280) User NETVIEW Segment Record processed.")

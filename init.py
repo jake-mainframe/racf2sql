@@ -34,6 +34,7 @@ def init_db(filename):
     init_usoprp(c)
     init_uswrk(c)
     init_usomvs(c)
+    init_usnetv(c)
 
     conn.commit()
     conn.close()
@@ -127,3 +128,6 @@ def init_uswrk(c):
 
 def init_usomvs(c):
     c.execute('CREATE TABLE usomvs (name TEXT, uid TEXT, home_path TEXT, program TEXT, cputimemax INTEGER, assizemax INTEGER, fileprocmax INTEGER, procusermax INTEGER, threadsmax INTEGER, mmapareamax INTEGER, memlimit TEXT, shmemax TEXT)')
+
+def init_usnetv(c):
+    c.execute('CREATE TABLE usnetv (name TEXT, ic TEXT, consname TEXT, ctl TEXT, msgrecvr TEXT, ngfadmn TEXT, ngmfvspn TEXT)')
