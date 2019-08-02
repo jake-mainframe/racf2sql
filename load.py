@@ -54,6 +54,8 @@ def process(l, c):
         process_usnmap(l, c)
     elif record_type == "0209":
         process_usdmap(l, c)
+    elif record_type == "0210":
+        process_usdfp(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -297,3 +299,14 @@ def process_usdmap(l, c):
     )
     c.execute("INSERT INTO usdmap VALUES(?, ?, ?)", v)
     print("INFO: (0209) User Associated Distributed Mappings Record processed.")
+
+def process_usdfp(l, c):
+    v = (
+        l[5:13],      #USDFP_NAME         User ID as taken from the profile name.
+        l[14:22],     #USDFP_DATAAPPL     Default application name for the user.
+        l[23:31],     #USDFP_DATACLAS     Default data class for the user.
+        l[32:40],     #USDFP_MGMTCLAS     Default management class for the user.
+        l[41:49],     #USDFP_STORCLAS     Default storage class for the user.
+    )
+    c.execute("INSERT INTO usdfp VALUES(?, ?, ?, ?, ?)", v)
+    print("INFO: (0210) User DFP Data Record processed.")
