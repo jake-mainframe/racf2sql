@@ -94,6 +94,8 @@ def process(l, c):
         process_uskerb(l, c)
     elif record_type == "02E0":
         process_usproxy(l, c)
+    elif record_type == "02F0":
+        process_useim(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -719,3 +721,11 @@ def process_usproxy(l, c):
     )
     c.execute("INSERT INTO usproxy VALUES(?, ?, ?)", v)
     print("INFO: (02E0) User PROXY Record processed.")
+
+def process_useim(l, c):
+    v = (
+        l[5:13],      #USEIM_NAME         User name.
+        l[14:260],    #USEIM_LDAPPROF     EIM LDAPBIND profile name.
+    )
+    c.execute("INSERT INTO useim VALUES(?, ?)", v)
+    print("INFO: (02F0) User EIM Data Record processed.")

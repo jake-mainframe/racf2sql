@@ -43,6 +43,7 @@ def init_db(filename):
     init_usnds(c)
     init_uskerb(c)
     init_usproxy(c)
+    init_useim(c)
 
     conn.commit()
     conn.close()
@@ -163,3 +164,6 @@ def init_uskerb(c):
 
 def init_usproxy(c):
     c.execute('CREATE TABLE usproxy (name TEXT, ldap_host TEXT, bind_dn TEXT)')
+
+def init_useim(c):
+    c.execute('CREATE TABLE useim (name TEXT, ldapprof TEXT)')
