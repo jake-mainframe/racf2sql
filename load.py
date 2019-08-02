@@ -96,6 +96,8 @@ def process(l, c):
         process_usproxy(l, c)
     elif record_type == "02F0":
         process_useim(l, c)
+    elif record_type == "02G1":
+        process_uscsd(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -729,3 +731,13 @@ def process_useim(l, c):
     )
     c.execute("INSERT INTO useim VALUES(?, ?)", v)
     print("INFO: (02F0) User EIM Data Record processed.")
+
+def process_uscsd(l, c):
+    v = (
+        l[5:13],      #USCSD_NAME         User name.
+        l[14:18],     #USCSD_TYPE         Data type for the custom field. Valid values are CHAR, FLAG, HEX, NUM.
+        l[19:51],     #USCSD_KEY          Custom field keyword; maximum length = 8.
+        l[52:1152],   #USCSD_VALUE        Custom field value.
+    )
+    c.execute("INSERT INTO uscsd VALUES(?, ?)", v)
+    print("INFO: (02G1) User CSDATA Custom Fields Record processed.")
