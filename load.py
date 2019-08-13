@@ -56,6 +56,8 @@ def process(l, c):
         process_usdmap(l, c)
     elif record_type == "020A":
         process_usmfa(l, c)
+    elif record_type == "020B":
+        process_usmpol(l, c)
     elif record_type == "0210":
         process_usdfp(l, c)
     elif record_type == "0220":
@@ -356,6 +358,14 @@ def process_usmfa(l, c):
     )
     c.execute("INSERT INTO usmfa VALUES(?, ?, ?)", v)
     print("INFO: (020A) User MFA Factor Data Record processed.")
+
+def process_usmpol(l, c):
+    v = (
+        l[5:13],      #USMPOL_NAME        User ID as taken from the profile name.
+        l[14:34],     #USMPOL_POLICY_NAME MFA Policy name.
+    )
+    c.execute("INSERT INTO usmpol VALUES(?, ?)", v)
+    print("INFO: (020B) User MFA Policies Record processed.")
 
 def process_usdfp(l, c):
     v = (
