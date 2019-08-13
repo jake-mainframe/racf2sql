@@ -162,6 +162,8 @@ def process(l, c):
         process_keyr(l, c)
     elif record_type == "0570":
         process_grtme(l, c)
+    elif record_type == "0571":
+        process_grtmec(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1220,3 +1222,12 @@ def process_grtme(l, c):
     )
     c.execute("INSERT INTO grtme VALUES(?, ?, ?)", v)
     print("INFO: (0570) General Resource TME Data Record processed.")
+
+def process_grtmec(l, c):
+    v = (
+        l[5:251],     #GRTMEC_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRTMEC_CLASS_NAME  Name of the class to which the general resource belongs.
+        l[261:507],   #GRTMEC_CHILD       Child role.
+    )
+    c.execute("INSERT INTO grtmec VALUES(?, ?, ?)", v)
+    print("INFO: (0571) General Resource TME Child Record processed.")
