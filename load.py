@@ -114,6 +114,8 @@ def process(l, c):
         process_dsvol(l, c)
     elif record_type == "0404":
         process_dsacc(l, c)
+    elif record_type == "0405":
+        process_dsinstd(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -864,3 +866,14 @@ def process_dsacc(l, c):
     )
     c.execute("INSERT INTO dsacc VALUES(?, ?, ?, ?, ?)", v)
     print("INFO: (0404) Data Set Access Record processed.")
+
+def process_dsinstd(l, c):
+    v = (
+        l[5:49],      #DSINSTD_NAME       Data set name as taken from the profile name.
+        l[50:56],     #DSINSTD_VOL        Volume upon which this data set resides. Blank if the profile is generic, and *MODEL if the profile is a model profile.
+        l[57:65],     #DSINSTD_USR_NAME   The name of the installation-defined field.
+        l[66:321],    #DSINSTD_USR_DATA   The data for the installation-defined field.
+        l[322:330],   #DSINSTD_USR_FLAG   The flag for the installation-defined field in the form X<cc>.
+    )
+    c.execute("INSERT INTO dsinstd VALUES(?, ?, ?, ?, ?)", v)
+    print("INFO: (0405) Data Set Installation Data Record processed.")
