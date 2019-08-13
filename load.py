@@ -130,6 +130,8 @@ def process(l, c):
         process_grmem(l, c)
     elif record_type == "0504":
         process_grvol(l, c)
+    elif record_type == "0505":
+        process_gracc(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1006,3 +1008,14 @@ def process_grvol(l, c):
     )
     c.execute("INSERT INTO grvol VALUES(?, ?, ?)", v)
     print("INFO: (0504) General Resource Volumes Record processed.")
+
+def process_gracc(l, c):
+    v = (
+        l[5:251],     #GRACC_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRACC_CLASS_NAME   Name of the class to which the general resource profile belongs.
+        l[261:269],   #GRACC_AUTH_ID      User ID or group name which is authorized to use the general resource.
+        l[270:278],   #GRACC_ACCESS       The authority that the user or group has over the resource. Valid values are NONE, EXECUTE, READ, UPDATE, CONTROL, and ALTER.
+        l[279:284],   #GRACC_ACCESS_CNT   The number of times that the resource was accessed.
+    )
+    c.execute("INSERT INTO gracc VALUES(?, ?, ?, ?, ?)", v)
+    print("INFO: (0505) General Resource Access Record processed.")
