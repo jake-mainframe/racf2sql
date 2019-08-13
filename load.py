@@ -150,6 +150,8 @@ def process(l, c):
         process_grdlfj(l, c)
     elif record_type == "0530":
         process_grsign(l, c)
+    elif record_type == "0540":
+        process_grst(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1138,3 +1140,16 @@ def process_grsign(l, c):
     )
     c.execute("INSERT INTO grsign VALUES(?, ?, ?)", v)
     print("INFO: (0530) General Resource SSIGNON Data Record processed.")
+
+def process_grst(l, c):
+    v = (
+        l[5:251],     #GRST_NAME          Profile name.
+        l[252:260],   #GRST_CLASS_NAME    The class name, STARTED.
+        l[261:269],   #GRST_USER_ID       User ID assigned.
+        l[270:278],   #GRST_GROUP_ID      Group name assigned.
+        l[279:283],   #GRST_TRUSTED       Is process to run trusted? Valid Values include "Yes" and "No".
+        l[284:288],   #GRST_PRIVILEGED    Is process to run privileged? Valid Values include "Yes" and "No".
+        l[289:293],   #GRST_TRACE         Is entry to be traced? Valid Values include "Yes" and "No".
+    )
+    c.execute("INSERT INTO grst VALUES(?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0540) General Resource Started Task Data Record processed.")

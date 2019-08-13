@@ -71,6 +71,7 @@ def init_db(filename):
     init_grdlf(c)
     init_grdlfj(c)
     init_grsign(c)
+    init_grst(c)
 
     conn.commit()
     conn.close()
@@ -275,3 +276,6 @@ def init_grdlfj(c):
 
 def init_grsign(c):
     c.execute('CREATE TABLE grsign (name TEXT, class_name TEXT, protection TEXT)')
+
+def init_grst(c):
+    c.execute('CREATE TABLE grst (name TEXT, class_name TEXT, user_id TEXT, group_id TEXT, trusted TEXT, privileged TEXT, trace TEXT)')
