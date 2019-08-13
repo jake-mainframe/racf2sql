@@ -59,6 +59,7 @@ def init_db(filename):
     init_grbd(c)
     init_grtvol(c)
     init_grcat(c)
+    init_grmem(c)
 
     conn.commit()
     conn.close()
@@ -227,3 +228,6 @@ def init_grtvol(c):
 
 def init_grcat(c):
     c.execute('CREATE TABLE grcat (name TEXT, class_name TEXT, category INTEGER)')
+
+def init_grmem(c):
+    c.execute('CREATE TABLE grmem (name TEXT, class_name TEXT, member TEXT, global_acc TEXT, pads_data TEXT, vol_name TEXT, vmevent_data TEXT, seclevel INTEGER, category INTEGER)')

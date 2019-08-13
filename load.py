@@ -126,6 +126,8 @@ def process(l, c):
         process_grtvol(l, c)
     elif record_type == "0502":
         process_grcat(l, c)
+    elif record_type == "0503":
+        process_grmem(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -978,3 +980,18 @@ def process_grcat(l,c):
     )
     c.execute("INSERT INTO grcat VALUES(?, ?, ?)", v)
     print("INFO: (0502) General Resource Categories Record processed.")
+
+def process_grmem(l, c):
+    v = (
+        l[5:251],     #GRMEM_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRMEM_CLASS_NAME   Name of the class to which the general resource profile belongs.
+        l[261:516],   #GRMEM_MEMBER       Member value for this general resource.
+        l[517:525],   #GRMEM_GLOBAL_ACC   If this is a GLOBAL profile, this is the access that is allowed. Valid values are NONE, READ, UPDATE, CONTROL, and ALTER.
+        l[526:534],   #GRMEM_PADS_DATA    If this is a PROGRAM profile, this field contains the Program Access to Data Set (PADS) information for the profile. Valid values are PADCHK and NOPADCHK.
+        l[535:541],   #GRMEM_VOL_NAME     If this is a PROGRAM profile, this field defines the volume upon which the program resides.
+        l[542:547],   #GRMEM_VMEVENT_DATA If this is a VMXEVENT profile, this field defines the level of auditing that is being performed. Valid values are CTL, AUDIT, and NOCTL.
+        l[548:553],   #GRMEM_SECLEVEL     If this is a SECLEVEL profile in the SECDATA class, this is the numeric security level that is associated with the SECLEVEL.
+        l[554:559],   #GRMEM_CATEGORY     If this is a CATEGORY profile in the SECDATA class, this is the numeric category that is associated with the CATEGORY.
+    )
+    c.execute("INSERT INTO grmem VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0503) General Resource Members Record processed.")
