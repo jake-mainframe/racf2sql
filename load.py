@@ -124,6 +124,8 @@ def process(l, c):
         process_grbd(l, c)
     elif record_type == "0501":
         process_grtvol(l, c)
+    elif record_type == "0502":
+        process_grcat(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -967,3 +969,12 @@ def process_grtvol(l, c):
     )
     c.execute("INSERT INTO grtvol VALUES(?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0501) General Resource Tape Volume Data Record processed.")
+
+def process_grcat(l,c):
+    v = (
+        l[5:251],     #GRCAT_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRCAT_CLASS_NAME   Name of the class to which the general resource profile belongs.
+        l[261:266],   #GRCAT_CATEGORY     Category to which this general resource belongs.
+    )
+    c.execute("INSERT INTO grcat VALUES(?, ?, ?)", v)
+    print("INFO: (0502) General Resource Categories Record processed.")
