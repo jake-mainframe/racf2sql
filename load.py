@@ -152,6 +152,8 @@ def process(l, c):
         process_grsign(l, c)
     elif record_type == "0540":
         process_grst(l, c)
+    elif record_type == "0550":
+        process_grsv(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1153,3 +1155,13 @@ def process_grst(l, c):
     )
     c.execute("INSERT INTO grst VALUES(?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0540) General Resource Started Task Data Record processed.")
+
+def process_grsv(l, c):
+    v = (
+        l[5:251],     #GRSV_NAME          Profile name.
+        l[252:260],   #GRSV_CLASS_NAME    Class name, SYSMVIEW.
+        l[261:269],   #GRSV_SCRIPT_NAME   Logon script name for the application.
+        l[270:278],   #GRSV_PARM_NAME     Parameter list name for the application.
+    )
+    c.execute("INSERT INTO grsv VALUES(?, ?, ?, ?)", v)
+    print("INFO: (0550) General Resource SystemView Data Record processed.")
