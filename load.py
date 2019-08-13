@@ -140,6 +140,8 @@ def process(l, c):
         process_grfltr(l, c)
     elif record_type == "0509":
         process_grdmap(l, c)
+    elif record_type == "0510":
+        process_grses(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1076,3 +1078,18 @@ def process_grdmap(l, c):
     )
     c.execute("INSERT INTO grdmap VALUES(?, ?, ?, ?, ?)", v)
     print("INFO: (0509) General Resource Distributed Identity Mapping Data Record processed.")
+
+def process_grses(l, c):
+    v = (
+        l[5:251],     #GRSES_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRSES_CLASS_NAME   Name of the class to which the general resource profile belongs, namely APPCLU.
+        l[261:269],   #GRSES_SESSION_KEY  The key associated with the APPC session.
+        l[270:274],   #GRSES_LOCKED       Is the profile locked? Valid Values include "Yes" and "No".
+        l[275:285],   #GRSES_KEY_DATE     Last date that the session key was changed.
+        l[286:291],   #GRSES_KEY_INTERVAL Number of days that the key is valid.
+        l[292:297],   #GRSES_SLS_FAIL     Current number of failed attempts.
+        l[298:303],   #GRSES_MAX_FAIL     Number of failed attempts before lockout.
+        l[304:312],   #GRSES_CONVSEC      Specifies the security checking performed when sessions are established. Valid values are NONE, CONVSEC, PERSISTV, ALREADYV, and AVPV.
+    )
+    c.execute("INSERT INTO grses VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0510) General Resource Session Data Record processed.")

@@ -66,6 +66,7 @@ def init_db(filename):
     init_grcacc(c)
     init_grfltr(c)
     init_grdmap(c)
+    init_grses(c)
 
     conn.commit()
     conn.close()
@@ -255,3 +256,6 @@ def init_grfltr(c):
 
 def init_grdmap(c):
     c.execute('CREATE TABLE grdmap (name TEXT, class_name TEXT, label TEXT, user TEXT, didreg TEXT)')
+
+def init_grses(c):
+    c.execute('CREATE TABLE grses (name TEXT, class_name TEXT, session_key TEXT, locked TEXT, key_date TEXT, key_interval INTEGER, sls_fail INTEGER, max_fail INTEGER, convsec TEXT)')
