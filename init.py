@@ -67,6 +67,7 @@ def init_db(filename):
     init_grfltr(c)
     init_grdmap(c)
     init_grses(c)
+    init_grsese(c)
 
     conn.commit()
     conn.close()
@@ -259,3 +260,6 @@ def init_grdmap(c):
 
 def init_grses(c):
     c.execute('CREATE TABLE grses (name TEXT, class_name TEXT, session_key TEXT, locked TEXT, key_date TEXT, key_interval INTEGER, sls_fail INTEGER, max_fail INTEGER, convsec TEXT)')
+
+def init_grsese(c):
+    c.execute('CREATE TABLE grsese (name TEXT, class_name TEXT, entity_name TEXT, fail_cnt INTEGER)')

@@ -142,6 +142,8 @@ def process(l, c):
         process_grdmap(l, c)
     elif record_type == "0510":
         process_grses(l, c)
+    elif record_type == "0511":
+        process_grsese(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1093,3 +1095,13 @@ def process_grses(l, c):
     )
     c.execute("INSERT INTO grses VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0510) General Resource Session Data Record processed.")
+
+def process_grsese(l, c):
+    v = (
+        l[5:251],     #GRSESE_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRSESE_CLASS_NAME  Name of the class to which the general resource profile belongs, namely APPCLU.
+        l[261:296],   #GRSESE_ENTITY_NAME Entity name.
+        l[297:302],   #GRSESE_FAIL_CNT    The number of failed session attempts.
+    )
+    c.execute("INSERT INTO grsese VALUES(?, ?, ?, ?)", v)
+    print("INFO: (0511) General Resource Session Entities Record processed.")
