@@ -98,6 +98,8 @@ def process(l, c):
         process_useim(l, c)
     elif record_type == "02G1":
         process_uscsd(l, c)
+    elif record_type == "1210":
+        process_usmfac(l, c)
     elif record_type == "0400":
         process_dsbd(l, c)
     else:
@@ -743,6 +745,16 @@ def process_uscsd(l, c):
     )
     c.execute("INSERT INTO uscsd VALUES(?, ?)", v)
     print("INFO: (02G1) User CSDATA Custom Fields Record processed.")
+
+def process_usmfac(l, c):
+    v = (
+        l[5, 13],     #USMFAC_NAME        User ID as taken from the profile name.
+        l[14:34],     #USMFAC_FACTOR_NAME Factor name.
+        l[35:55],     #USMFAC_TAG_NAME    The tag name associated with the factor.
+        l[56:1080],   #USMFAC_TAG_VALUE   Tag value associated with the tag name.
+    )
+    c.execute("INSERT INTO usmfac VALUES (?, ?, ?, ?)", v)
+    print("INFO: (1210) User MFA Factor Tags Data Record processed.")
 
 def process_dsbd(l, c):
     v = (

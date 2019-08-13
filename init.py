@@ -46,6 +46,7 @@ def init_db(filename):
     init_useim(c)
     init_uscsd(c)
     init_dsbd(c)
+    init_usmfac(c)
 
     conn.commit()
     conn.close()
@@ -175,3 +176,6 @@ def init_uscsd(c):
 
 def init_dsbd(c):
     c.execute('CREATE TABLE dsbd (name TEXT, vol TEXT, generic TEXT, create_date TEXT, owner_id TEXT, lastref_date TEXT, lastchg_date TEXT, alter_cnt INTEGER, control_cnt INTEGER, update_cnt INTEGER, read_cnt INTEGER, uacc TEXT, grpds TEXT, audit_level TEXT, grp_id TEXT, ds_type TEXT, level INTEGER, device_name TEXT, gaudit_level TEXT, install_data TEXT, audit_okqual TEXT, audit_faqual TEXT, gaudity_okqual TEXT, gaudit_faqual TEXT, warning TEXT, seclevel INTEGER, notify_id TEXT, retention INTEGER, erase TEXT, seclabel TEXT)')
+
+def init_usmfac(c):
+    c.execute('CREATE TABLE usmfac (name TEXT, factor_name TEXT, tag_name TEXT, tag_value TEXT)')
