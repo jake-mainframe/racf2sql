@@ -76,6 +76,7 @@ def init_db(filename):
     init_grcert(c)
     init_certr(c)
     init_keyr(c)
+    init_grtme(c)
 
     conn.commit()
     conn.close()
@@ -295,3 +296,6 @@ def init_certr(c):
 
 def init_keyr(c):
     c.execute('CREATE TABLE keyr (name TEXT, class_name TEXT, cert_name TEXT, cert_usage TEXT, cert_default TEXT, cert_label TEXT)')
+
+def init_grtme(c):
+    c.execute('CREATE TABLE grtme (name TEXT, class_name TEXT, parent TEXT)')
