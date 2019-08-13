@@ -188,6 +188,8 @@ def process(l, c):
         process_grsig(l, c)
     elif record_type == "05G0":
         process_grcsf(l, c)
+    elif record_type == "05G1":
+        process_grcsfk(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1429,3 +1431,12 @@ def process_grcsf(l, c):
     )
     c.execute("INSERT INTO grcsf VALUES(?, ?, ?, ?, ?, ?)", v)
     print("INFO: (05G0) General Resource ICSF Record processed.")
+
+def process_grcsfk(l, c):
+    v = (
+        l[5:251],
+        l[252:260],
+        l[261:325],
+    )
+    c.execute("INSERT INTO grcsfk VALUES(?, ?, ?)", v)
+    print("INFO: (05G1) General Resource ICSF Key Label Record processed.")
