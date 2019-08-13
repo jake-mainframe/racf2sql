@@ -64,6 +64,7 @@ def init_db(filename):
     init_gracc(c)
     init_grinstd(c)
     init_grcacc(c)
+    init_grfltr(c)
 
     conn.commit()
     conn.close()
@@ -247,3 +248,6 @@ def init_grinstd(c):
 
 def init_grcacc(c):
     c.execute('CREATE TABLE grcacc (name TEXT, class_name TEXT, catype TEXT, caname TEXT, auth_id TEXT, access TEXT, access_cnt INTEGER, net_id TEXT, cacriteria TEXT)')
+
+def init_grfltr(c):
+    c.execute('CREATE TABLE grfltr (name TEXT, class_name TEXT, label TEXT, status TEXT, user TEXT, create_name TEXT)')

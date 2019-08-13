@@ -136,6 +136,8 @@ def process(l, c):
         process_grinstd(l, c)
     elif record_type == "0507":
         process_grcacc(l, c)
+    elif record_type == "0508":
+        process_grfltr(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1047,5 +1049,17 @@ def process_grcacc(l, c):
         l[303:311],   #GRCACC_NET_ID      The network name when GRCACC_CATYPE is APPCPORT.
         l[312:556],   #GRCACC_CACRITERIA  Access criteria or SERVAUTH IP data.
     )
-    c.execute("INSERT INTO grcacc VALEUS(?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    c.execute("INSERT INTO grcacc VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0507) General Resource Conditional Access Record processed.")
+
+def process_grfltr(l, c):
+    v = (
+        l[5:251],     #GRFLTR_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRFLTR_CLASS_NAME  Name of the class to which the general resource profile belongs.
+        l[261:293],   #GRFLTR_LABEL       The label associated with this filter.
+        l[294:302],   #GRFLTR_STATUS      The status of this filter (TRUST) for filters that are trusted.
+        l[303:549],   #GRFLTR_USER        The user ID or criteria profile name associated with this filter.
+        l[550:1061],  #GRFLTR_CREATE_NAME The issuer's or subject's name, or both, used to create this profile.
+    )
+    c.execute("INSERT INTO grfltr VALUES(?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0508) General Resource Filter Data Record processed.")
