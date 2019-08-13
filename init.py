@@ -51,6 +51,7 @@ def init_db(filename):
     init_dsbd(c)
     init_dscat(c)
     init_dscacc(c)
+    init_dsvol(c)
 
     conn.commit()
     conn.close()
@@ -195,3 +196,6 @@ def init_dscat(c):
 
 def init_dscacc(c):
     c.execute('CREATE TABLE dscacc (name TEXT, vol TEXT, catype TEXT, caname TEXT, auth_id TEXT, access TEXT, access_cnt INTEGER, net_id TEXT, cacriteria TEXT)')
+
+def init_dsvol(c):
+    c.execute('CREATE TABLE dsvol (name TEXT, vol TEXT, vol_name TEXT)')

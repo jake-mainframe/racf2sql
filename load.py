@@ -110,6 +110,8 @@ def process(l, c):
         process_dscat(l, c)
     elif record_type == "0402":
         process_dscacc(l, c)
+    elif record_type == "0403":
+        process_dsvol(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -840,3 +842,12 @@ def process_dscacc(l, c):
     )
     c.execute("INSERT INTO dscacc VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0402) Data Set Conditional Access Record processed.")
+
+def process_dsvol(l, c):
+    v = (
+        l[5:49],      #DSVOL_NAME         Data set name as taken from the profile name.
+        l[50:56],     #DSVOL_VOL          Volume upon which this data set resides.
+        l[57:63],     #DSVOL_VOL_NAME     A volume upon which the data set resides.
+    )
+    c.execute("INSERT INTO dsvol VALUES(?, ?, ?)", v)
+    print("INFO: (0403) Data Set Volumes Record processed.")
