@@ -112,6 +112,8 @@ def process(l, c):
         process_dscacc(l, c)
     elif record_type == "0403":
         process_dsvol(l, c)
+    elif record_type == "0404":
+        process_dsacc(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -851,3 +853,14 @@ def process_dsvol(l, c):
     )
     c.execute("INSERT INTO dsvol VALUES(?, ?, ?)", v)
     print("INFO: (0403) Data Set Volumes Record processed.")
+
+def process_dsacc(l, c):
+    v = (
+        l[5:49],      #DSACC_NAME         Data set name as taken from the profile name.
+        l[50:56],     #DSACC_VOL          Volume upon which this data set resides. Blank if the profile is generic, and *MODEL if the profile is a model profile.
+        l[57:65],     #DSACC_AUTH_ID      The user ID or group name that is authorized to the data set.
+        l[66:74],     #DSACC_ACCESS       The access allowed to the user. Valid values are NONE, EXECUTE, READ, UPDATE, CONTROL, and ALTER.
+        l[75:80],     #DSACC_ACCESS_CNT   The number of times that the data set was accessed.
+    )
+    c.execute("INSERT INTO dsacc VALUES(?, ?, ?, ?, ?)", v)
+    print("INFO: (0404) Data Set Access Record processed.")
