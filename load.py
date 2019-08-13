@@ -108,6 +108,8 @@ def process(l, c):
         process_dsbd(l, c)
     elif record_type == "0401":
         process_dscat(l, c)
+    elif record_type == "0402":
+        process_dscacc(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -823,3 +825,18 @@ def process_dscat(l, c):
     )
     c.execute("INSERT INTO dscat VALUES(?, ?, ?)", v)
     print("INFO: (0401) Data Set Categories Record processed.")
+
+def process_dscacc(l, c):
+    v = (
+        l[5:49],      #DSCACC_NAME        Data set name as taken from the profile name.
+        l[50:56],     #DSCACC_VOL         Volume upon which this data set resides. Blank if the profile is generic, and *MODEL if the profile is a model profile.
+        l[57:65],     #DSCACC_CATYPE      The type of conditional access checking that is being performed. Valid values are APPCPORT, PROGRAM, CONSOLE, TERMINAL, JESINPUT, and SERVAUTH.
+        l[66:74],     #DSCACC_CANAME      The name of a conditional access element that is permitted access.
+        l[75:83],     #DSCACC_AUTH_ID     The user ID or group name that is authorized to the data set.
+        l[84:92],     #DSCACC_ACCESS      The access of the conditional access element/user combination. Valid values are NONE, EXECUTE, READ, UPDATE, CONTROL, and ALTER.
+        l[93:98],     #DSCACC_ACCESS_CNT  The number of times that the data set was accessed.
+        l[99:107],    #DSCACC_NET_ID      The network name when DSCACC_CATYPE is APPCPORT.
+        l[108:352],   #DSCACC_CACRITERIA  The IP name when DSCACC_CATYPE is SERVAUTH.
+    )
+    c.execute("INSERT INTO dscacc VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0402) Data Set Conditional Access Record processed.")

@@ -50,6 +50,7 @@ def init_db(filename):
     init_usmfac(c)
     init_dsbd(c)
     init_dscat(c)
+    init_dscacc(c)
 
     conn.commit()
     conn.close()
@@ -191,3 +192,6 @@ def init_dsbd(c):
 
 def init_dscat(c):
     c.execute('CREATE TABLE dscat (name TEXT, vol TEXT, category INTEGER)')
+
+def init_dscacc(c):
+    c.execute('CREATE TABLE dscacc (name TEXT, vol TEXT, catype TEXT, caname TEXT, auth_id TEXT, access TEXT, access_cnt INTEGER, net_id TEXT, cacriteria TEXT)')
