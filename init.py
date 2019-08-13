@@ -88,6 +88,7 @@ def init_db(filename):
     init_grcdt(c)
     init_grictx(c)
     init_grcfdef(c)
+    init_grsig(c)
 
     conn.commit()
     conn.close()
@@ -343,3 +344,6 @@ def init_grictx(c):
 
 def init_grcfdef(c):
     c.execute('CREATE TABLE grcfdef (name TEXT, class TEXT, type TEXT, maxlen INTEGER, maxval INTEGER, minval INTEGER, first TEXT, other TEXT, mixed TEXT, help TEXT, listhead TEXT, valrexx TEXT)')
+
+def init_grsig(c):
+    c.execute('CREATE TABLE grsig (name TEXT, class_name TEXT, sigrequired TEXT, failload TEXT, audit TEXT)')

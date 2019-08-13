@@ -184,6 +184,8 @@ def process(l, c):
         process_grictx(l, c)
     elif record_type == "05E0":
         process_grcfdef(l, c)
+    elif record_type == "05F0":
+        process_grsig(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1402,3 +1404,14 @@ def process_grcfdef(l, c):
     )
     c.execute("INSERT INTO grcfdef VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (05E0) General Resource CFDEF Data Record processed.")
+
+def process_grsig(l, c):
+    v = (
+        l[5:251],     #GRSIG_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRSIG_CLASS_NAME   Name of the class to which the general resource profile belongs.
+        l[261:265],   #GRSIG_SIGREQUIRED  Signature required. Valid Values include "Yes" and "No".
+        l[266:276],   #GRSIG_FAILLOAD     Condition for which load should fail. Valid values are NEVER, BADSIGONLY, and ANYBAD.
+        l[277:287],   #GRSIG_AUDIT        Condition for which RACF should audit. Valid values are NONE, ALL, SUCCESS, BADSIGONLY, and ANYBAD.
+    )
+    c.execute("INSERT INTO grsig VALUES(?, ?, ?, ?, ?)", v)
+    print("INFO: (05F0) General Resource SIGVER Data Record processed.")
