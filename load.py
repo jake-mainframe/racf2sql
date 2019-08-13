@@ -144,6 +144,8 @@ def process(l, c):
         process_grses(l, c)
     elif record_type == "0511":
         process_grsese(l, c)
+    elif record_type == "0520":
+        process_grdlf(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1105,3 +1107,12 @@ def process_grsese(l, c):
     )
     c.execute("INSERT INTO grsese VALUES(?, ?, ?, ?)", v)
     print("INFO: (0511) General Resource Session Entities Record processed.")
+
+def process_grdlf(l, c):
+    v = (
+        l[5:251],     #GRDLF_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRDLF_CLASS_NAME   Name of the class to which the general resource profile belongs, namely DLFCLASS.
+        l[261:265],   #GRDLF_RETAIN       Is this a retained resource? Valid Values include "Yes" and "No".
+    )
+    c.execute("INSERT INTO grdlf VALUES(?, ?, ?)", v)
+    print("INFO: (0520) General Resource DLF Data Record processed.")
