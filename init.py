@@ -54,6 +54,7 @@ def init_db(filename):
     init_dsvol(c)
     init_dsacc(c)
     init_dsinstd(c)
+    init_dsdfp(c)
 
     conn.commit()
     conn.close()
@@ -207,3 +208,6 @@ def init_dsacc(c):
 
 def init_dsinstd(c):
     c.execute('CREATE TABLE dsinstd (name TEXT, vol TEXT, usr_name TEXT, usr_data TEXT, usr_flag TEXT)')
+
+def init_dsdfp(c):
+    c.execute('CREATE TABLE dsdfp (name TEXT, vol TEXT, resowner_id TEXT, datakey TEXT)')

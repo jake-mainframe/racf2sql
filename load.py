@@ -116,6 +116,8 @@ def process(l, c):
         process_dsacc(l, c)
     elif record_type == "0405":
         process_dsinstd(l, c)
+    elif record_type == "0410":
+        process_dsdfp(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -877,3 +879,13 @@ def process_dsinstd(l, c):
     )
     c.execute("INSERT INTO dsinstd VALUES(?, ?, ?, ?, ?)", v)
     print("INFO: (0405) Data Set Installation Data Record processed.")
+
+def process_dsdfp(l, c):
+    v = (
+        l[5:49],      #DSDFP_NAME         Data set name as taken from the profile name.
+        l[50:56],     #DSDFP_VOL          Volume upon which this data set resides. Blank if the profile is generic, and *MODEL if the profile is a model profile. 
+        l[57:65],     #DSDFP_RESOWNER_ID  The resource owner of the data set.
+        l[66:130],    #DSDFP_DATAKEY      The label of the ICSF key that is used to encrypt the data of any newly allocated data set.
+    )
+    c.execute("INSERT INTO dsdfp VALUES(?, ?, ?, ?)", v)
+    print("INFO: (0410) Data Set DFP Data Record processed.")
