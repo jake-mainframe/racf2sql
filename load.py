@@ -148,6 +148,8 @@ def process(l, c):
         process_grdlf(l, c)
     elif record_type == "0521":
         process_grdlfj(l, c)
+    elif record_type == "0530":
+        process_grsign(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1127,3 +1129,12 @@ def process_grdlfj(l, c):
     )
     c.execute("INSERT INTO grdlfj VALUES(?, ?, ?)", v)
     print("INFO: (0521) General Resource DLF Job Names Record processed.")
+
+def process_grsign(l, c):
+    v = (
+        l[5:251],     #GRSIGN_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRSIGN_CLASS_NAME  Name of the class to which the general resource profile belongs.
+        l[261:325],   #GRSIGN_PROTECTION  Method of protection for the encryption key.
+    )
+    c.execute("INSERT INTO grsign VALUES(?, ?, ?)", v)
+    print("INFO: (0530) General Resource SSIGNON Data Record processed.")

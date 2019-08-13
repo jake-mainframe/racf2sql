@@ -70,6 +70,7 @@ def init_db(filename):
     init_grsese(c)
     init_grdlf(c)
     init_grdlfj(c)
+    init_grsign(c)
 
     conn.commit()
     conn.close()
@@ -271,3 +272,6 @@ def init_grdlf(c):
 
 def init_grdlfj(c):
     c.execute('CREATE TABLE grdlfj (name TEXT, class_name TEXT, job_name TEXT)')
+
+def init_grsign(c):
+    c.execute('CREATE TABLE grsign (name TEXT, class_name TEXT, protection TEXT)')
