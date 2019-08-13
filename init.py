@@ -62,6 +62,7 @@ def init_db(filename):
     init_grmem(c)
     init_grvol(c)
     init_gracc(c)
+    init_grinstd(c)
 
     conn.commit()
     conn.close()
@@ -239,3 +240,6 @@ def init_grvol(c):
 
 def init_gracc(c):
     c.execute('CREATE TABLE gracc (name TEXT, class_name TEXT, auth_id TEXT, access TEXT, access_cnt INTEGER)')
+
+def init_grinstd(c):
+    c.execute('CREATE TABLE grinstd (name TEXT, class_name TEXT, usr_name TEXT, usr_data TEXT, usr_flag TEXT)')

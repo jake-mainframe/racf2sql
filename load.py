@@ -132,6 +132,8 @@ def process(l, c):
         process_grvol(l, c)
     elif record_type == "0505":
         process_gracc(l, c)
+    elif record_type == "0506":
+        process_grinstd(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1019,3 +1021,14 @@ def process_gracc(l, c):
     )
     c.execute("INSERT INTO gracc VALUES(?, ?, ?, ?, ?)", v)
     print("INFO: (0505) General Resource Access Record processed.")
+
+def process_grinstd(l, c):
+    v = (
+        l[5:251],     #GRINSTD_NAME       General resource name as taken from the profile name.
+        l[252:260],   #GRINSTD_CLASS_NAME Name of the class to which the general resource profile belongs.
+        l[261:269],   #GRINSTD_USR_NAME   The name of the installation-defined field.
+        l[270:525],   #GRINSTD_USR_DATA   The data for the installation-defined field.
+        l[256:534],   #GRINSTD_USR_FLAG   The flag for the installation-defined field in the form X<nn>.
+    )
+    c.execute("INSERT INTO grinstd VALUES (?, ?, ?, ?, ?)", v)
+    print("INFO: (0506) General Resource Installation Data Record processed.")
