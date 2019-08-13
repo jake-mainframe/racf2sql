@@ -138,6 +138,8 @@ def process(l, c):
         process_grcacc(l, c)
     elif record_type == "0508":
         process_grfltr(l, c)
+    elif record_type == "0509":
+        process_grdmap(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1063,3 +1065,14 @@ def process_grfltr(l, c):
     )
     c.execute("INSERT INTO grfltr VALUES(?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0508) General Resource Filter Data Record processed.")
+
+def process_grdmap(l, c):
+    v = (
+        l[5:251],     #GRDMAP_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRDMAP_CLASS_NAME  Name of the class to which the general resource profile belongs.
+        l[261:293],   #GRDMAP_LABEL       The label associated with this mapping.
+        l[294:302],   #GRDMAP_USER        The RACF user ID associated with this mapping.
+        l[303:558],   #GRDMAP_DIDREG      The registry name value associated with this mapping.
+    )
+    c.execute("INSERT INTO grdmap VALUES(?, ?, ?, ?, ?)", v)
+    print("INFO: (0509) General Resource Distributed Identity Mapping Data Record processed.")
