@@ -154,6 +154,8 @@ def process(l, c):
         process_grst(l, c)
     elif record_type == "0550":
         process_grsv(l, c)
+    elif record_type == "0560":
+        process_grcert(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1165,3 +1167,20 @@ def process_grsv(l, c):
     )
     c.execute("INSERT INTO grsv VALUES(?, ?, ?, ?)", v)
     print("INFO: (0550) General Resource SystemView Data Record processed.")
+
+def process_grcert(l, c):
+    v = (
+        l[5:251],     #GRCERT_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRCERT_CLASS_NAME  Name of the class to which the general resource profile belongs.
+        l[261:271],   #GRCERT_START_DATE  The date from which this certificate is valid.
+        l[272:280],   #GRCERT_START_TIME  The time from which this certificate is valid.
+        l[281:291],   #GRCERT_END_DATE    The date after which this certificate is no longer valid.
+        l[292:300],   #GRCERT_END_TIME    The time after which this certificate is no longer valid.
+        l[301:309],   #GRCERT_KEY_TYPE    The type of key associated with the certificate. Valid values: BPECC, BPECCTKN, BPECTKNT, DSA, ICSFTOKN, NTECC, NTECCTKN, NTECTKNT, PCICCTKN, PKCSDER, PUBTOKEN, RSATKNT, or all blanks indicating no private key. The value PUBTOKEN indicates that the public key (without the private key) is stored in ICSF.
+        l[310:320],   #GRCERT_KEY_SIZE    The size of private key associated with the certificate, expressed in bits.
+        l[321:337],   #GRCERT_LAST_SERIAL The hexadecimal representation of the low-order eight bytes of the serial number of the last certificate signed with this key.
+        l[338:348],   #GRCERT_RING_SEQN   A sequence number for certificates within the ring.
+        l[349:353],   #GRCERT_GEN_REQ     Indicator to show if the certificate is used to generate a request. Valid Values include "Yes" and "No".
+    )
+    c.execute("INSERT INTO grcert VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0560) General Resource Certificate Data Record processed.")
