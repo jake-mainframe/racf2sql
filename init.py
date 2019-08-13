@@ -55,6 +55,7 @@ def init_db(filename):
     init_dsacc(c)
     init_dsinstd(c)
     init_dsdfp(c)
+    init_dstme(c)
 
     conn.commit()
     conn.close()
@@ -211,3 +212,6 @@ def init_dsinstd(c):
 
 def init_dsdfp(c):
     c.execute('CREATE TABLE dsdfp (name TEXT, vol TEXT, resowner_id TEXT, datakey TEXT)')
+
+def init_dstme(c):
+    c.execute('CREATE TABLE dstme (name TEXT, vol TEXT, role_name TEXT, access_auth TEXT, cond_class TEXT, cond_prof TEXT)')

@@ -118,6 +118,8 @@ def process(l, c):
         process_dsinstd(l, c)
     elif record_type == "0410":
         process_dsdfp(l, c)
+    elif record_type == "0421":
+        process_dstme(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -889,3 +891,15 @@ def process_dsdfp(l, c):
     )
     c.execute("INSERT INTO dsdfp VALUES(?, ?, ?, ?)", v)
     print("INFO: (0410) Data Set DFP Data Record processed.")
+
+def process_dstme(l, c):
+    v = (
+        l[5:49],      #DSTME_NAME         Data set name as taken from the profile name.
+        l[50:56],     #DSTME_VOL          Volume upon which this data set resides. Blank if the profile is generic, and *MODEL if the profile is a model profile.
+        l[57:303],    #DSTME_ROLE_NAME    Role profile name.
+        l[304:312],   #DSTME_ACCESS_AUTH  Access permission to this resource as defined by the role.
+        l[313:321],   #DSTME_COND_CLASS   Class name for conditional access.
+        l[322, 568],  #DSTME_COND_PROF    Resource profile for conditional access.
+    )
+    c.execute("INSERT INTO dstme VALUES(?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0421) Data Set TME Role Record processed.")
