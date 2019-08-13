@@ -122,6 +122,8 @@ def process(l, c):
         process_dstme(l, c)
     elif record_type == "0500":
         process_grbd(l, c)
+    elif record_type == "0501":
+        process_grtvol(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -951,3 +953,17 @@ def process_grbd(l, c):
     )
     c.execute("INSERT INTO grbd VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0500) General Resource Basic Data Record processed.")
+
+def process_grtvol(l, c):
+    v = (
+        l[5:251],     #GRTVOL_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRTVOL_CLASS_NAME  Name of the class to which the general resource profile belongs, namely TAPEVOL.
+        l[261:266],   #GRTVOL_SEQUENCE    The file sequence number of the tape data set.
+        l[267:277],   #GRTVOL_CREATE_DATE Creation date of the tape data set.
+        l[278:282],   #GRTVOL_DISCRETE    Does a discrete profile exist? Valid Values include "Yes" and "No".
+        l[283:327],   #GRTVOL_INTERN_NAME The RACF internal data set name.
+        l[328:583],   #GRTVOL_INTERN_VOLS The volumes upon which the data set resides.
+        l[584:628],   #GRTVOL_CREATE_NAME The data set name used when creating the data set.
+    )
+    c.execute("INSERT INTO grtvol VALUES(?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0501) General Resource Tape Volume Data Record processed.")
