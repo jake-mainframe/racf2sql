@@ -158,6 +158,8 @@ def process(l, c):
         process_grcert(l, c)
     elif record_type == "0561":
         process_certr(l, c)
+    elif record_type == "0562":
+        process_keyr(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1195,3 +1197,15 @@ def process_certr(l, c):
     )
     c.execute("INSERT INTO certr VALUES(?, ?, ?)", v)
     print("INFO: (0561) General Resource Certificate References Record processed.")
+
+def process_keyr(l, c):
+    v = (
+        l[5:251],     #KEYR_NAME          General resource name as taken from the profile name.
+        l[252:260],   #KEYR_CLASS_NAME    Name of the class to which the general resource profile belongs.
+        l[261:507],   #KEYR_CERT_NAME     The name of the profile which contains the certificate which is in this key ring.
+        l[508:516],   #KEYR_CERT_USAGE    The usage of the certificate within the ring. Valid values are PERSONAL, SITE, and CERTAUTH.
+        l[517:521],   #KEYR_CERT_DEFAULT  Is this certificate the default certificate within the ring? Valid Values include "Yes" and "No".
+        l[522:554],   #KEYR_CERT_LABEL    The label associated with the certificate.
+    )
+    c.execute("INSERT INTO keyr VALUES(?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0562) General Resource Key Ring Data Record processed.")
