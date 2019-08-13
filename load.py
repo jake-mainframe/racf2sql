@@ -172,6 +172,8 @@ def process(l, c):
         process_grtmee(l, c)
     elif record_type == "0580":
         process_grkerb(l, c)
+    elif record_type == "0590":
+        process_grproxy(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1295,3 +1297,13 @@ def process_grkerb(l, c):
     )
     c.execute("INSERT INTO grkerb VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0580) General Resource KERB Data Record processed.")
+
+def process_grproxy(l, c):
+    v = (
+        l[5:251],     #GRPROXY_NAME       General resource name as taken from the profile name.
+        l[252:260],   #GRPROXY_CLASS_NAME Name of the class to which the general resource belongs.
+        l[261:1284],  #GRPROXY_LDAP_HOST  LDAP server URL.
+        l[1285:2308], #GRPROXY_BIND_DN    LDAP BIND distinguished name.
+    )
+    c.execute("INSERT INTO grproxy VALUES(?, ?, ?, ?)", v)
+    print("INFO: (0590) General Resource PROXY Record processed.")

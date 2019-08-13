@@ -82,6 +82,7 @@ def init_db(filename):
     init_grtmeg(c)
     init_grtmee(c)
     init_grkerb(c)
+    init_grproxy(c)
 
     conn.commit()
     conn.close()
@@ -319,3 +320,6 @@ def init_grtmee(c):
 
 def init_grkerb(c):
     c.execute('CREATE TABLE grkerb (name TEXT, class_name TEXT, kerbname TEXT, min_life INTEGER, max_life INTEGER, def_life INTEGER, key_vers INTEGER, encrypt_des TEXT, encrypt_des3 TEXT, encrypt_desd TEXT, encrypt_a128 TEXT, encrypt_a256 TEXT, encrypt_a128sha2 TEXT, encrypt_a256sha2 TEXT, chkaddrs TEXT)')
+
+def init_grproxy(c):
+    c.execute('CREATE TABLE grproxy (name TEXT, class_name TEXT, ldap_host TEXT, bind_dn TEXT)')
