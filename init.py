@@ -74,6 +74,7 @@ def init_db(filename):
     init_grst(c)
     init_grsv(c)
     init_grcert(c)
+    init_certr(c)
 
     conn.commit()
     conn.close()
@@ -287,3 +288,6 @@ def init_grsv(c):
 
 def init_grcert(c):
     c.execute('CREATE TABLE grcert (name TEXT, class_name TEXT, start_date TEXT, start_time TEXT, end_date TEXT, end_time TEXT, key_type TEXT, key_size INTEGER, last_serial TEXT, ring_seqn INTEGER, gen_req TEXT)')
+
+def init_certr(c):
+    c.execute('CREATE TABLE certr (name TEXT, class_name TEXT, ring_name TEXT)')

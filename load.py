@@ -156,6 +156,8 @@ def process(l, c):
         process_grsv(l, c)
     elif record_type == "0560":
         process_grcert(l, c)
+    elif record_type == "0561":
+        process_certr(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1184,3 +1186,12 @@ def process_grcert(l, c):
     )
     c.execute("INSERT INTO grcert VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0560) General Resource Certificate Data Record processed.")
+
+def process_certr(l, c):
+    v = (
+        l[5:251],     #CERTR_NAME         General resource name as taken from the profile name.
+        l[252:260],   #CERTR_CLASS_NAME   Name of the class to which the general resource profile belongs.
+        l[261:507],   #CERTR_RING_NAME    The name of the profile which represents a key ring with which this certificate is associated.
+    )
+    c.execute("INSERT INTO certr VALUES(?, ?, ?)", v)
+    print("INFO: (0561) General Resource Certificate References Record processed.")
