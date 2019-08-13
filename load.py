@@ -180,6 +180,8 @@ def process(l, c):
         process_gralias(l, c)
     elif record_type == "05C0":
         process_grcdt(l, c)
+    elif record_type == "05D0":
+        process_grictx(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1367,4 +1369,16 @@ def process_grcdt(l, c):
         l[429:439],   #GRCDT_GENERIC      GENERIC setting. Valid values are ALLOWED and DISALLOWED.
     )
     c.execute("INSERT INTO grcdt VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
-    print("INFO: (05C0) General Resource CDTINFO Data Record processes.")
+    print("INFO: (05C0) General Resource CDTINFO Data Record processed.")
+
+def process_grictx(l, c):
+    v = (
+        l[5:251],     #GRICTX_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRICTX_CLASS_NAME  Name of the class to which the general resource profile belongs.
+        l[261:265],   #GRICTX_USEMAP      Should the identity cache store an application provided identity mapping? Valid Values include "Yes" and "No".
+        l[266:270],   #GRICTX_DOMAP       Should the identity cache determine and store the identity mapping? Valid Values include "Yes" and "No".
+        l[271:275],   #GRICTX_MAPREQ      Is an identity mapping required? Valid Values include "Yes" and "No".
+        l[276:281],   #GRICTX_MAP_TIMEOUT How long the identity cache should store an identity mapping.
+    )
+    c.execute("INSERT INTO grictx VALUES(?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (05D0) General Resource ICTX Data Record processed.")
