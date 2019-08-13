@@ -120,6 +120,8 @@ def process(l, c):
         process_dsdfp(l, c)
     elif record_type == "0421":
         process_dstme(l, c)
+    elif record_type == "0500":
+        process_grbd(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -903,3 +905,49 @@ def process_dstme(l, c):
     )
     c.execute("INSERT INTO dstme VALUES(?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0421) Data Set TME Role Record processed.")
+
+def process_grbd(l, c):
+    v = (
+        l[5:251],     #GRBD_NAME          General resource name as taken from the profile name.
+        l[252:260],   #GRBD_CLASS_NAME    Name of the class to which the general resource profile belongs.
+        l[261:265],   #GRBD_GENERIC       Is this a generic profile? Valid Values include "Yes" and "No".
+        l[266:269],   #GRBD_CLASS         The class number of the profile.
+        l[270:280],   #GRBD_CREATE_DATE   Date the profile was created.
+        l[281:289],   #GRBD_OWNER_ID      The user ID or group name which owns the profile.
+        l[290:300],   #GRBD_LASTREF_DATE  The date that the resource was last referenced.
+        l[301:311],   #GRBD_LASTCHG_DATE  The date that the resource was last changed.
+        l[312:317],   #GRBD_ALTER_CNT     The number of times that the resource was accessed with ALTER authority.
+        l[318:323],   #GRBD_CONTROL_CNT   The number of times that the resource was accessed with CONTROL authority.
+        l[324:329],   #GRBD_UPDATE_CNT    The number of times that the resource was accessed with UPDATE authority.
+        l[330:335],   #GRBD_READ_CNT      The number of times that the resource was accessed with READ authority.
+        l[336:344],   #GRBD_UACC          The universal access of this resource. For profiles in classes other than DIGTCERT, the valid values are NONE, READ, EXECUTE, UPDATE, CONTROL, and ALTER. For DIGTCERT profiles, the valid values are TRUST, NOTRUST, and HIGHTRST.
+        l[345:353],   #GRBD_AUDIT_LEVEL   Indicates the level of resource-owner-specified auditing that is performed. Valid values are ALL, SUCCESS, FAIL, and NONE.
+        l[354:357],   #GRBD_LEVEL         The level of the resource.
+        l[358:366],   #GRBD_GAUDIT_LEVEL  Indicates the level of auditor-specified auditing that is performed. Valid values are ALL, SUCCESS, FAIL, and NONE.
+        l[367:622],   #GRBD_INSTALL_DATA  Installation-defined data.
+        l[623:631],   #GRBD_AUDIT_OKQUAL  The resource-owner-specified successful access audit qualifier. This is set to blanks if AUDIT_LEVEL is NONE. Otherwise, it is set to either READ, UPDATE, CONTROL, or ALTER.
+        l[632:640],   #GRBD_AUDIT_FAQUAL  The resource-owner-specified failing access audit qualifier. This is set to blanks if AUDIT_LEVEL is NONE. Otherwise, it is set to either READ, UPDATE, CONTROL, or ALTER.
+        l[641:649],   #GRBD_GAUDIT_OKQUAL The auditor-specified successful access audit qualifier. This is set to blanks if GAUDIT_LEVEL is NONE. Otherwise, it is set to either READ, UPDATE, CONTROL, or ALTER.
+        l[650:658],   #GRBD_GAUDIT_FAQUAL The auditor-specified failing access audit qualifier. This is set to blanks if GAUDIT_LEVEL is NONE. Otherwise, it is set to either READ, UPDATE, CONTROL, or ALTER.
+        l[659:663],   #GRBD_WARNING       Does this resource have the WARNING attribute? Valid Values include "Yes" and "No".
+        l[664:668],   #GRBD_SINGLEDS      If this is a TAPEVOL profile, is there only one data set on this tape? Valid Values include "Yes" and "No".
+        l[669:673],   #GRBD_AUTO          If this is a TAPEVOL profile, is the TAPEVOL protection automatic? Valid Values include "Yes" and "No".
+        l[674:678],   #GRBD_TVTOC         If this is a TAPEVOL profile, is there a tape volume table of contents on this tape? Valid Values include "Yes" and "No".
+        l[679:687],   #GRBD_NOTIFY_ID     User ID that is notified when violations occur.
+        l[688:692],   #GRBD_ACCESS_SUN    Can the terminal be used on Sunday? Valid Values include "Yes" and "No".
+        l[693:697],   #GRBD_ACCESS_MON    Can the terminal be used on Monday? Valid Values include "Yes" and "No".
+        l[698:702],   #GRBD_ACCESS_TUE    Can the terminal be used on Tuesday? Valid Values include "Yes" and "No".
+        l[703:707],   #GRBD_ACCESS_WED    Can the terminal be used on Wednesday? Valid Values include "Yes" and "No".
+        l[708:712],   #GRBD_ACCESS_THU    Can the terminal be used on Thursday? Valid Values include "Yes" and "No".
+        l[713:717],   #GRBD_ACCESS_FRI    Can the terminal be used on Friday? Valid Values include "Yes" and "No".
+        l[718:722],   #GRBD_ACCESS_SAT    Can the terminal be used on Saturday? Valid Values include "Yes" and "No".
+        l[723:731],   #GRBD_START_TIME    After what time can a user logon from this terminal?
+        l[732:740],   #GRBD_END_TIME      After what time can a user not logon from this terminal?
+        l[741:746],   #GRBD_ZONE_OFFSET   Time zone in which the terminal is located. Expressed as hh:mm. Blank if the time zone has not been specified.
+        l[747:748],   #GRBD_ZONE_DIRECT   The direction of the time zone shift. Valid values are E(east), W(west), and blank.
+        l[749:752],   #GRBD_SECLEVEL      The security level of the general resource.
+        l[753:1008],  #GRBD_APPL_DATA     Installation-defined data.
+        l[1009:1017], #GRBD_SECLABEL      The security label for the general resource.
+    )
+    c.execute("INSERT INTO grbd VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0500) General Resource Basic Data Record processed.")

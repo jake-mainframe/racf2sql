@@ -56,6 +56,7 @@ def init_db(filename):
     init_dsinstd(c)
     init_dsdfp(c)
     init_dstme(c)
+    init_grbd(c)
 
     conn.commit()
     conn.close()
@@ -215,3 +216,6 @@ def init_dsdfp(c):
 
 def init_dstme(c):
     c.execute('CREATE TABLE dstme (name TEXT, vol TEXT, role_name TEXT, access_auth TEXT, cond_class TEXT, cond_prof TEXT)')
+
+def init_grbd(c):
+    c.execute('CREATE TABLE grbd (name TEXT, class_name TEXT, generic TEXT, class INTEGER, create_date TEXT, owner_id TEXT, lastref_date TEXT, lastchg_date TEXT, alter_cnt INTEGER, control_cnt INTEGER, update_cnt INTEGER, read_cnt INTEGER, uacc TEXT, audit_level TEXT, level INTEGER, gaudit_level TEXT, install_data TEXT, audit_okqual TEXT, audit_faqual TEXT, gaudit_okqual TEXT, gaudit_faqual TEXT, warning TEXT, singleds TEXT, auto TEXT, tvtoc TEXT, notify_id TEXT, access_sun TEXT, access_mon TEXT, access_tue TEXT, access_wed TEXT, access_thu TEXT, access_fri TEXT, access_sat TEXT, start_time TEXT, end_time TEXT, zone_offset TEXT, zone_direct TEXT, seclevel INTEGER, appl_data TEXT, seclabel TEXT)')
