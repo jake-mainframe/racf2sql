@@ -106,6 +106,8 @@ def process(l, c):
         process_usmfac(l, c)
     elif record_type == "0400":
         process_dsbd(l, c)
+    elif record_type == "0401":
+        process_dscat(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -812,3 +814,12 @@ def process_dsbd(l, c):
     )
     c.execute("INSERT INTO dsbd VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0400) Data Set Basic Data Record processed.")
+
+def process_dscat(l, c):
+    v = (
+        l[5:49],      #DSCAT_NAME         Data set name as taken from the profile name.
+        l[50:56],     #DSCAT_VOL          Volume upon which this data set resides. Blank if the profile is generic, and *MODEL if the profile is a model profile.
+        l[57:62],     #DSCAT_CATEGORY     Category associated with this data set.
+    )
+    c.execute("INSERT INTO dscat VALUES(?, ?, ?)", v)
+    print("INFO: (0401) Data Set Categories Record processed.")
