@@ -164,6 +164,8 @@ def process(l, c):
         process_grtme(l, c)
     elif record_type == "0571":
         process_grtmec(l, c)
+    elif record_type == "0572":
+        process_grtmer(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1231,3 +1233,17 @@ def process_grtmec(l, c):
     )
     c.execute("INSERT INTO grtmec VALUES(?, ?, ?)", v)
     print("INFO: (0571) General Resource TME Child Record processed.")
+
+def process_grtmer(l, c):
+    v = (
+        l[5:251],     #GRTMER_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRTMER_CLASS_NAME  Name of the class to which the general resource belongs.
+        l[261:507],   #GRTMER_ORIGIN_ROLE Role profile from which resource access is inherited.
+        l[508:516],   #GRTMER_PROF_CLASS  Class name of the origin-role resource.
+        l[517:763],   #GRTMER_PROF_NAME   Resource name defined in the origin role.
+        l[764:772],   #GRTMER_ACCESS_AUTH Access permission to the resource.
+        l[773:781],   #GRTMER_COND_CLASS  Class name for conditional access.
+        l[782:1028],  #GRTMER_COND_PROF   Resource profile for conditional access.
+    )
+    c.execute("INSERT INTO grtmer VALUES(?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0572) General Resource TME Resource Record processed.")

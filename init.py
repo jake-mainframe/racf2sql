@@ -78,6 +78,7 @@ def init_db(filename):
     init_keyr(c)
     init_grtme(c)
     init_grtmec(c)
+    init_grtmer(c)
 
     conn.commit()
     conn.close()
@@ -303,3 +304,6 @@ def init_grtme(c):
 
 def init_grtmec(c):
     c.execute('CREATE TABLE grtmec (name TEXT, class_name TEXT, child TEXT)')
+
+def init_grtmer(c):
+    c.execute('CREATE TABLE grtmer (name TEXT, class_name TEXT, origin_role TEXT, prof_class TEXT, prof_name TEXT, access_auth TEXT, cond_class TEXT, cond_prof TEXT)')
