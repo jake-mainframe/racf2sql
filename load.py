@@ -178,6 +178,8 @@ def process(l, c):
         process_greim(l, c)
     elif record_type == "05B0":
         process_gralias(l, c)
+    elif record_type == "05C0":
+        process_grcdt(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1333,3 +1335,36 @@ def process_gralias(l, c):
     )
     c.execute("INSERT INTO gralias VALUES(?, ?, ?)", v)
     print("INFO: (05B0) General Resource Alias Data Record processed.")
+
+def process_grcdt(l, c):
+    v = (
+        l[5:251],     #GRCDT_NAME         General resource name as taken from the profile.
+        l[252:260],   #GRCDT_CLASS_NAME   Name of the class to which the general resource belongs, namely CDT.
+        l[261:271],   #GRCDT_POSIT        POSIT number for class.
+        l[272:275],   #GRCDT_MAXLENGTH    Maximum length of profile names when using ENTITYX.
+        l[276:286],   #GRCDT_MAXLENX      Maximum length of profile names when using ENTITYX.
+        l[187:290],   #GRCDT_DEFAULTRC    Default return code.
+        l[291:301],   #GRCDT_KEYQUALIFIER Number of key qualifiers.
+        l[302:310],   #GRCDT_GROUP        Resource grouping class name.
+        l[311:319],   #GRCDT_MEMBER       Member class name.
+        l[320:324],   #GRCDT_FIRST_ALPHA  Is an alphabetic character allowed in the first character of a profile name? Valid Values include "Yes" and "No".
+        l[325:329],   #GRCDT_FIRST_NATL   Is a national character allowed in the first character of a profile name? Valid Values include "Yes" and "No".
+        l[330:334],   #GRCDT_FIRST_NUM    Is a numeric character allowed in the first character of a profile name? Valid Values include "Yes" and "No".
+        l[335:339],   #GRCDT_FIRST_SPEC   Is a special character allowed in the first character of a profile name? Valid Values include "Yes" and "No".
+        l[340:344],   #GRCDT_OTHER_ALPHA  Is an alphabetic character allowed in other characters of a profile name? Valid Values include "Yes" and "No".
+        l[345:349],   #GRCDT_OTHER_NATL   Is a national character allowed in other characters of a profile name? Valid Values include "Yes" and "No".
+        l[350:354],   #GRCDT_OTHER_NUM    Is a numeric character allowed in other characters of a profile name? Valid Values include "Yes" and "No".
+        l[355:359],   #GRCDT_OTHER_SPEC   Is a special character allowed in other characters of a profile name? Valid Values include "Yes" and "No".
+        l[360:364],   #GRCDT_OPER         Is OPERATIONS attribute to be considered? Valid Values include "Yes" and "No".
+        l[365:373],   #GRCDT_DEFAULTUACC  Default universal access. Valid values are ACEE, ALTER, CONTROL, UPDATE, READ, EXECUTE, NONE.
+        l[374:384],   #GRCDT_RACLIST      RACLIST setting. Valid values are ALLOWED, DISALLOWED, REQUIRED.
+        l[385:395],   #GRCDT_GENLIST      GENLIST setting. Valid values are ALLOWED, DISALLOWED.
+        l[396:400],   #GRCDT_PROF_ALLOW   Are profiles allowed in the class? Valid Values include "Yes" and "No".
+        l[401:405],   #GRCDT_SECL_REQ     Are security labels required for the class when MLACTIVE is on? Valid Values include "Yes" and "No".
+        l[406:414],   #GRCDT_MACPROCESS   Type of mandatory access check processing. Valid values are EQUAL, NORMAL, REVERSE.
+        l[415:419],   #GRCDT_SIGNAL       Is ENF signal to be sent? Valid Values include "Yes" and "No".
+        l[420:428],   #GRCDT_CASE         Case of profile names. Valid values are ASIS, UPPER.
+        l[429:439],   #GRCDT_GENERIC      GENERIC setting. Valid values are ALLOWED and DISALLOWED.
+    )
+    c.execute("INSERT INTO grcdt VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (05C0) General Resource CDTINFO Data Record processes.")
