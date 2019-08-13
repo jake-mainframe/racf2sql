@@ -176,6 +176,8 @@ def process(l, c):
         process_grproxy(l, c)
     elif record_type == "05A0":
         process_greim(l, c)
+    elif record_type == "05B0":
+        process_gralias(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1322,3 +1324,12 @@ def process_greim(l, c):
     )
     c.execute("INSERT INTO greim VALUES(?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (05A0) General Resource EIM Record processed.")
+
+def process_gralias(l, c):
+    v = (
+        l[5:251],     #GRALIAS_NAME       General resource name as taken from the profile.
+        l[252:260],   #GRALIAS_CLASS_NAME Name of the class to which the general resource belongs.
+        l[261:293],   #GRALIAS_IPLOOK     IP lookup value in SERVAUTH class.
+    )
+    c.execute("INSERT INTO gralias VALUES(?, ?, ?)", v)
+    print("INFO: (05B0) General Resource Alias Data Record processed.")

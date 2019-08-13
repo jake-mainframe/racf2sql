@@ -84,6 +84,7 @@ def init_db(filename):
     init_grkerb(c)
     init_grproxy(c)
     init_greim(c)
+    init_grailias(c)
 
     conn.commit()
     conn.close()
@@ -327,3 +328,6 @@ def init_grproxy(c):
 
 def init_greim(c):
     c.execute('CREATE TABLE greim (name TEXT, class_name TEXT, domain_dn TEXT, enable TEXT, local_reg TEXT, kerbreg TEXT, x509reg TEXT)')
+
+def init_grailias(c):
+    c.execute('CREATE TABLE grailias (name TEXT, class_name TEXT, iplook INTEGER)')
