@@ -54,6 +54,8 @@ def process(l, c):
         process_usnmap(l, c)
     elif record_type == "0209":
         process_usdmap(l, c)
+    elif record_type == "020A":
+        process_usmfa(l, c)
     elif record_type == "0210":
         process_usdfp(l, c)
     elif record_type == "0220":
@@ -345,6 +347,15 @@ def process_usdmap(l, c):
     )
     c.execute("INSERT INTO usdmap VALUES(?, ?, ?)", v)
     print("INFO: (0209) User Associated Distributed Mappings Record processed.")
+
+def process_usmfa(l, c):
+    v = (
+        l[5:13],      #USMFA_NAME         User ID as taken from the profile name.
+        l[14:34],     #USMFA_FACTOR_NAME  Factor name.
+        l[35:54],     #USMFA_FACTOR_ACTIVE  Factor active date. Will be blank if factor is not ACTIVE.
+    )
+    c.execute("INSERT INTO usmfa VALUES(?, ?, ?)", v)
+    print("INFO: (020A) User MFA Factor Data Record processed.")
 
 def process_usdfp(l, c):
     v = (
