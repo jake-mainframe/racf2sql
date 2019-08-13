@@ -186,6 +186,8 @@ def process(l, c):
         process_grcfdef(l, c)
     elif record_type == "05F0":
         process_grsig(l, c)
+    elif record_type == "05G0":
+        process_grcsf(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1415,3 +1417,15 @@ def process_grsig(l, c):
     )
     c.execute("INSERT INTO grsig VALUES(?, ?, ?, ?, ?)", v)
     print("INFO: (05F0) General Resource SIGVER Data Record processed.")
+
+def process_grcsf(l, c):
+    v = (
+        l[5:251],     #GRCSF_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRCSF_CLASS_NAME   Name of the class to which the general resource profile belongs.
+        l[261:273],   #GRCSF_EXPORTABLE   Is the symmetric key exportable? Valid values are: BYNONE, BYLIST, and BYANY.
+        l[274:529],   #GRCSF_USAGE        Allowable uses of the asymmetric key. Valid values are: HANDSHAKE, NOHANDSHAKE, SECUREEXPORT, and NOSECUREEXPORT.
+        l[530:533],   #GRCSF_CPACF_WRAP   Specifies whether the encrypted symmetric key is eligible to be rewrapped by CP Assist for Cryptographic Function (CPACF). Valid Values include "Yes" and "No".
+        l[534:537],   #GRCSF_CPACF_RET    Specifies whether the encrypted symmetric keys that are rewrapped by CP Assist for Cryptographic Function (CPACF) are eligible to be returned to an authorized caller.
+    )
+    c.execute("INSERT INTO grcsf VALUES(?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (05G0) General Resource ICSF Record processed.")
