@@ -146,6 +146,8 @@ def process(l, c):
         process_grsese(l, c)
     elif record_type == "0520":
         process_grdlf(l, c)
+    elif record_type == "0521":
+        process_grdlfj(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1116,3 +1118,12 @@ def process_grdlf(l, c):
     )
     c.execute("INSERT INTO grdlf VALUES(?, ?, ?)", v)
     print("INFO: (0520) General Resource DLF Data Record processed.")
+
+def process_grdlfj(l, c):
+    v = (
+        l[5:251],     #GRDLFJ_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRDLFJ_CLASS_NAME  Name of the class to which the general resource profile belongs, namely DLFCLASS.
+        l[261:269],   #GRDLFJ_JOB_NAME    The job name associated with the general resource.
+    )
+    c.execute("INSERT INTO grdlfj VALUES(?, ?, ?)", v)
+    print("INFO: (0521) General Resource DLF Job Names Record processed.")

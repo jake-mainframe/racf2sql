@@ -69,6 +69,7 @@ def init_db(filename):
     init_grses(c)
     init_grsese(c)
     init_grdlf(c)
+    init_grdlfj(c)
 
     conn.commit()
     conn.close()
@@ -267,3 +268,6 @@ def init_grsese(c):
 
 def init_grdlf(c):
     c.execute('CREATE TABLE grdlf (name TEXT, class_name TEXT, retain TEXT)')
+
+def init_grdlfj(c):
+    c.execute('CREATE TABLE grdlfj (name TEXT, class_name TEXT, job_name TEXT)')
