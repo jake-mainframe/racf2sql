@@ -170,6 +170,8 @@ def process(l, c):
         process_grtmeg(l, c)
     elif record_type == "0574":
         process_grtmee(l, c)
+    elif record_type == "0580":
+        process_grkerb(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1272,3 +1274,24 @@ def process_grtmee(l, c):
     )
     c.execute("INSERT INTO grtmee VALUES(?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0574) General Resource TME Role Record processed.")
+
+def process_grkerb(l, c):
+    v = (
+        l[5:251],     #GRKERB_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRKERB_CLASS_NAME  Name of the class to which the general resource profile belongs.
+        l[261:501],   #GRKERB_KERBNAME    The Kerberos realm name.
+        l[502:512],   #GRKERB_MIN_LIFE    Minimum ticket life.
+        l[513:523],   #GRKERB_MAX_LIFE    Maximum ticket life.
+        l[524:534],   #GRKERB_DEF_LIFE    Default ticket life.
+        l[535:538],   #GRKERB_KEY_VERS    Current key version.
+        l[539:543],   #GRKERB_ENCRYPT_DES Is key encryption using DES enabled? Valid Values include "Yes" and "No".
+        l[544:548],   #GRKERB_ENCRYPT_DES3  Is key encryption using DES3 enabled? Valid Values include "Yes" and "No".
+        l[549:553],   #GRKERB_ENCRYPT_DESD  Is key encryption using DES with derivation enabled? Valid Values include "Yes" and "No".
+        l[554:558],   #GRKERB_ENCRPT_A128 Is key encryption using AES128 enabled? Valid Values include "Yes" and "No".
+        l[559:563],   #GRKERB_ENCRPT_A256 Is key encryption using AES256 enabled? Valid Values include "Yes" and "No".
+        l[564:568],   #GRKERB_ENCRPT_A128SHA2   Is key encryption using AES128 SHA2 enabled? Valid Values include "Yes" and "No".
+        l[569:573],   #GRKERB_ENCRPT_A256SHA2   Is key encryption using AES256 SHA2 enabled? Valid Values include "Yes" and "No".
+        l[619:623],   #GRKERB_CHKADDRS    Should the Kerberos server check addresses in tickets? Valid Values include "Yes" and "No".
+    )
+    c.execute("INSERT INTO grkerb VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0580) General Resource KERB Data Record processed.")

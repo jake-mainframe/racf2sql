@@ -81,6 +81,7 @@ def init_db(filename):
     init_grtmer(c)
     init_grtmeg(c)
     init_grtmee(c)
+    init_grkerb(c)
 
     conn.commit()
     conn.close()
@@ -315,3 +316,6 @@ def init_grtmeg(c):
 
 def init_grtmee(c):
     c.execute('CREATE TABLE grtmee (name TEXT, class_name TEXT, role_name TEXT, access_auth TEXT, cond_class TEXT, cond_prof TEXT)')
+
+def init_grkerb(c):
+    c.execute('CREATE TABLE grkerb (name TEXT, class_name TEXT, kerbname TEXT, min_life INTEGER, max_life INTEGER, def_life INTEGER, key_vers INTEGER, encrypt_des TEXT, encrypt_des3 TEXT, encrypt_desd TEXT, encrypt_a128 TEXT, encrypt_a256 TEXT, encrypt_a128sha2 TEXT, encrypt_a256sha2 TEXT, chkaddrs TEXT)')
