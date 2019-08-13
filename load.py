@@ -134,6 +134,8 @@ def process(l, c):
         process_gracc(l, c)
     elif record_type == "0506":
         process_grinstd(l, c)
+    elif record_type == "0507":
+        process_grcacc(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1032,3 +1034,18 @@ def process_grinstd(l, c):
     )
     c.execute("INSERT INTO grinstd VALUES (?, ?, ?, ?, ?)", v)
     print("INFO: (0506) General Resource Installation Data Record processed.")
+
+def process_grcacc(l, c):
+    v = (
+        l[5:251],     #GRCACC_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRCACC_CLASS_NAME  Name of the class to which the general resource profile belongs.
+        l[261:269],   #GRCACC_CATYPE      The type of conditional access checking that is being performed. Valid values are CONSOLE, TERMINAL, JESINPUT, SYSID, APPCPORT, SERVAUTH, PROGRAM, and CRITERIA.
+        l[270:278],   #GRCACC_CANAME      The name of a conditional access element which is permitted access.
+        l[279:287],   #GRCACC_AUTH_ID     The user ID or group name which has authority to the general resource.
+        l[288:296],   #GRCACC_ACCESS      The authority of the conditional access element/user combination. Valid values are NONE, READ, UPDATE, CONTROL, and ALTER.
+        l[297:302],   #GRCACC_ACCESS_CNT  The number of times that the general resource was accessed.
+        l[303:311],   #GRCACC_NET_ID      The network name when GRCACC_CATYPE is APPCPORT.
+        l[312:556],   #GRCACC_CACRITERIA  Access criteria or SERVAUTH IP data.
+    )
+    c.execute("INSERT INTO grcacc VALEUS(?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (0507) General Resource Conditional Access Record processed.")
