@@ -83,6 +83,7 @@ def init_db(filename):
     init_grtmee(c)
     init_grkerb(c)
     init_grproxy(c)
+    init_greim(c)
 
     conn.commit()
     conn.close()
@@ -323,3 +324,6 @@ def init_grkerb(c):
 
 def init_grproxy(c):
     c.execute('CREATE TABLE grproxy (name TEXT, class_name TEXT, ldap_host TEXT, bind_dn TEXT)')
+
+def init_greim(c):
+    c.execute('CREATE TABLE greim (name TEXT, class_name TEXT, domain_dn TEXT, enable TEXT, local_reg TEXT, kerbreg TEXT, x509reg TEXT)')

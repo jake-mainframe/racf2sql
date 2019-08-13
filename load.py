@@ -174,6 +174,8 @@ def process(l, c):
         process_grkerb(l, c)
     elif record_type == "0590":
         process_grproxy(l, c)
+    elif record_type == "05A0":
+        process_greim(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1307,3 +1309,16 @@ def process_grproxy(l, c):
     )
     c.execute("INSERT INTO grproxy VALUES(?, ?, ?, ?)", v)
     print("INFO: (0590) General Resource PROXY Record processed.")
+
+def process_greim(l, c):
+    v = (
+        l[5:251],     #GREIM_NAME         Profile name.
+        l[252:260],   #GREIM_CLASS_NAME   Class name.
+        l[261:1284],  #GREIM_DOMAIN_DN    EIM domain name.
+        l[1285:1289], #GREIM_ENABLE       EIM Enable option. Valid Values include "Yes" and "No".
+        l[1365:1620], #GREIM_LOCAL_REG    EIM LDAP local registry name.
+        l[1621:1876], #GREIM_KERBREG      EIM Kerberos Registry Name
+        l[1877:2132], #GREIM_X509REG      EIM X.509 Registry name
+    )
+    c.execute("INSERT INTO greim VALUES(?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (05A0) General Resource EIM Record processed.")
