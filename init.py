@@ -87,6 +87,7 @@ def init_db(filename):
     init_grailias(c)
     init_grcdt(c)
     init_grictx(c)
+    init_grcfdef(c)
 
     conn.commit()
     conn.close()
@@ -339,3 +340,6 @@ def init_grcdt(c):
 
 def init_grictx(c):
     c.execute('CREATE TABLE grictx (name TEXT, class_name TEXT, usemap TEXT, domap TEXT, mapreq TEXT, map_timeout INTEGER)')
+
+def init_grcfdef(c):
+    c.execute('CREATE TABLE grcfdef (name TEXT, class TEXT, type TEXT, maxlen INTEGER, maxval INTEGER, minval INTEGER, first TEXT, other TEXT, mixed TEXT, help TEXT, listhead TEXT, valrexx TEXT)')

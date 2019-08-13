@@ -182,6 +182,8 @@ def process(l, c):
         process_grcdt(l, c)
     elif record_type == "05D0":
         process_grictx(l, c)
+    elif record_type == "05E0":
+        process_grcfdef(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1382,3 +1384,21 @@ def process_grictx(l, c):
     )
     c.execute("INSERT INTO grictx VALUES(?, ?, ?, ?, ?, ?)", v)
     print("INFO: (05D0) General Resource ICTX Data Record processed.")
+
+def process_grcfdef(l, c):
+    v = (
+        l[5:251],     #GRCFDEF_NAME       General resource name as taken from the profile name.
+        l[252:260],   #GRCFDEF_CLASS      Name of the class to which the general resource belongs, namely CFIELD.
+        l[261:265],   #GRCFDEF_TYPE       Data type for the custom field. Valid values are CHAR, FLAG, HEX, NUM.
+        l[266:276],   #GRCFDEF_MAXLEN     Maximum length of the custom field.
+        l[277:287],   #GRCFDEF_MAXVAL     Maximum value of the custom field.
+        l[288:298],   #GRCFDEF_MINVAL     Minimum value of the custom field.
+        l[299:307],   #GRCFDEF_FIRST      Character restriction for the first character. Valid values are ALPHA, ALPHANUM, ANY, NONATABC, NONATNUM, NUMERIC.
+        l[308:316],   #GRCFDEF_OTHER      Character restriction for other characters. Valid values are ALPHA, ALPHANUM, ANY, NONATABC, NONATNUM, NUMERIC.
+        l[317:321],   #GRCFDEF_MIXED      Is mixed case allowed in the field? Valid Values include "Yes" and "No".
+        l[322:577],   #GRCFDEF_HELP       Help text for the custom field.
+        l[578:618],   #GRCFDEF_LISTHEAD   List heading for the custom field.
+        l[619:627],   #GRCFDEF_VALREXX    Name of the REXX exec to validate the custom field value.
+    )
+    c.execute("INSERT INTO grcfdef VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (05E0) General Resource CFDEF Data Record processed.")
