@@ -743,7 +743,7 @@ def process_uscsd(l, c):
         l[19:51],     #USCSD_KEY          Custom field keyword; maximum length = 8.
         l[52:1152],   #USCSD_VALUE        Custom field value.
     )
-    c.execute("INSERT INTO uscsd VALUES(?, ?)", v)
+    c.execute("INSERT INTO uscsd VALUES(?, ?, ?, ?)", v)
     print("INFO: (02G1) User CSDATA Custom Fields Record processed.")
 
 def process_usmfac(l, c):
