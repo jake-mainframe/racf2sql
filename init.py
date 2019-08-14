@@ -97,6 +97,7 @@ def init_db(filename):
     init_grmpf(c)
     init_grcsd(c)
     init_gridtp(c)
+    init_grjes(c)
 
     conn.commit()
     conn.close()
@@ -379,3 +380,6 @@ def init_grcsd(c):
 
 def init_gridtp(c):
     c.execute('CREATE TABLE gridtp (name TEXT, class_name TEXT, sig_token_name TEXT, sig_seq_num TEXT, sig_cat TEXT, sig_alg TEXT, timeout TEXT, anyappl TEXT)')
+
+def init_grjes(c):
+    c.execute('CREATE TABLE grjes (name TEXT, class_name TEXT, keylabel TEXT)')

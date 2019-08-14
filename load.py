@@ -202,6 +202,8 @@ def process(l, c):
         process_grcsd(l, c)
     elif record_type == "05K0" or record_type == "05k0":    #IBM's documentation has a lowercase K in places, which we might as well handle.
         process_gridtp(l, c)
+    elif record_type == "05L0":
+        process_grjes(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1514,3 +1516,12 @@ def process_gridtp(l, c):
     )
     c.execute("INSERT INTO gridtp VALUES(?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (05K0) General Resource IDTPARMS Definition Record processed.")
+
+def process_grjes(l, c):
+    v = (
+        l[5:251],     #GRJES_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRJES_CLASS_NAME   Name of the class to which the general resource profile belongs.
+        l[261:325],   #GRJES_KEYLABEL     The label of the ICSF key that is used to encrypt the JES spool data.
+    )
+    c.execute("INSERT INTO grjes VALUES(?, ?, ?)", v)
+    print("INFO: (05L0) General Resource JES Data Record processed.")
