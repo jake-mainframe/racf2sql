@@ -192,6 +192,8 @@ def process(l, c):
         process_grcsfk(l, c)
     elif record_type == "05G2":
         process_grcsfc(l, c)
+    elif record_type == "05H0":
+        process_grmfa(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1451,3 +1453,12 @@ def process_grcsfc(l, c):
     )
     c.execute("INSERT INTO grcsfc VALUES(?, ?, ?)", v)
     print("INFO: (05G2) General Resource ICSF Certificate Identifier Record processed.")
+
+def process_grmfa(l, c):
+    v = (
+        l[5:251],     #GRMFA_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRMFA_CLASS_NAME   Name of the class to which the general resource profile belongs, namely MFADEF.
+        l[261:266],   #GRMFA_FACTOR_DATA_LEN  Length of factor data.
+    )
+    c.execute("INSERT INTO grmfa VALUES(?, ?, ?)", v)
+    print("INFO: (05H0) General Resource MFA Factor Definition Record processed.")
