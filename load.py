@@ -204,6 +204,8 @@ def process(l, c):
         process_gridtp(l, c)
     elif record_type == "05L0":
         process_grjes(l, c)
+    elif record_type == "1560":
+        process_certn(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1525,3 +1527,14 @@ def process_grjes(l, c):
     )
     c.execute("INSERT INTO grjes VALUES(?, ?, ?)", v)
     print("INFO: (05L0) General Resource JES Data Record processed.")
+
+def process_certn(l, c):
+    v = (
+        l[5:251],     #CERTN_NAME         General resource name as taken from the profile name.
+        l[252:260],   #CERTN_CLASS_NAME   Name of the class to which the general resource profile belongs.
+        l[261:1285],  #CERTN_ISSUER_DN    Issuers distinguished name.
+        l[1286:2310], #CERTN_SUBJECT_DN   Subjects distinguished name.
+        l[2311:2327], #CERTN_SIG_ALG      Certificate signature algorithm. Valid values are md2RSA, md5RSA, sha1RSA, sha1DSA, sha256RSA, sha224RSA, sha384RSA, sha512RSA, sha1ECDSA, sha256ECDSA, sha224ECDSA, sha384ECDSA, sha512ECDSA, and UNKNOWN.
+    )
+    c.execute("INSERT INTO certn VALUES(?, ?, ?, ?, ?)", v)
+    print("INFO: (1560) General Resource Certificate Information Record processed.")

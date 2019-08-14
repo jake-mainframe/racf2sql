@@ -98,6 +98,7 @@ def init_db(filename):
     init_grcsd(c)
     init_gridtp(c)
     init_grjes(c)
+    init_certn(c)
 
     conn.commit()
     conn.close()
@@ -383,3 +384,6 @@ def init_gridtp(c):
 
 def init_grjes(c):
     c.execute('CREATE TABLE grjes (name TEXT, class_name TEXT, keylabel TEXT)')
+
+def init_certn(c):
+    c.execute('CREATE TABLE certn (name TEXT, class_name TEXT, issuer_dn TEXT, subject_dn TEXT, sig_alg TEXT)')
