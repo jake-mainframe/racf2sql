@@ -194,6 +194,8 @@ def process(l, c):
         process_grcsfc(l, c)
     elif record_type == "05H0":
         process_grmfa(l, c)
+    elif record_type == "05I0":
+        process_grmfp(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1462,3 +1464,13 @@ def process_grmfa(l, c):
     )
     c.execute("INSERT INTO grmfa VALUES(?, ?, ?)", v)
     print("INFO: (05H0) General Resource MFA Factor Definition Record processed.")
+
+def process_grmfp(l, c):
+    v = (
+        l[5:251],     #GRMFP_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRMFP_CLASS_NAME   Name of the class to which the general resource profile belongs, namely MFADEF.
+        l[261:271],   #GRMFP_TOKEN_TIMEOUT    MFA token timeout setting.
+        l[272:275],   #GRMFP_REUSE        MFA token reuse setting.
+    )
+    c.execute("INSERT INTO grmfp VALUES(?, ?, ?, ?)", v)
+    print("INFO: (05I0) General Resource MFPOLICY Definition Record processed.")

@@ -93,6 +93,7 @@ def init_db(filename):
     init_grcsfk(c)
     init_grcsfc(c)
     init_grmfa(c)
+    init_grmfp(c)
 
     conn.commit()
     conn.close()
@@ -363,3 +364,6 @@ def init_grcsfc(c):
 
 def init_grmfa(c):
     c.execute('CREATE TABLE grmfa (name TEXT, class_name TEXT, factor_data_len INTEGER)')
+
+def init_grmfp(c):
+    c.execute('CREATE TABLE grmfp (name TEXT, class_name TEXT, token_timeout INTEGER, reuse TEXT)')
