@@ -196,6 +196,8 @@ def process(l, c):
         process_grmfa(l, c)
     elif record_type == "05I0":
         process_grmfp(l, c)
+    elif record_type == "05I1":
+        process_grmpf(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1474,3 +1476,12 @@ def process_grmfp(l, c):
     )
     c.execute("INSERT INTO grmfp VALUES(?, ?, ?, ?)", v)
     print("INFO: (05I0) General Resource MFPOLICY Definition Record processed.")
+
+def process_grmpf(l, c):
+    v = (
+        l[5:251],     #GRMPF_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRMPF_CLASS_NAME   Name of the class to which the general resource profile belongs, namely MFADEF.
+        l[261:281],   #GRMPF_POL_FACTOR   Policy factor name.
+    )
+    c.execute("INSERT INTO grmpf VALUES(?, ?, ?)", v)
+    print("INFO: (05I1) General Resource MFA Policy Factors Record processed.")
