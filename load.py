@@ -190,6 +190,8 @@ def process(l, c):
         process_grcsf(l, c)
     elif record_type == "05G1":
         process_grcsfk(l, c)
+    elif record_type == "05G2":
+        process_grcsfc(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1434,9 +1436,18 @@ def process_grcsf(l, c):
 
 def process_grcsfk(l, c):
     v = (
-        l[5:251],
-        l[252:260],
-        l[261:325],
+        l[5:251],     #GRCSFK_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRCSFK_CLASS_NAME  Name of the class to which the general resource profile belongs.
+        l[261:325],   #GRCSFK_LABEL       ICSF key label of a public key that can be used to export this symmetric key.
     )
     c.execute("INSERT INTO grcsfk VALUES(?, ?, ?)", v)
     print("INFO: (05G1) General Resource ICSF Key Label Record processed.")
+
+def process_grcsfc(l, c):
+    v = (
+        l[5:251],     #GRCSFC_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRCSFC_CLASS_NAME  Name of the class to which the general resource profile belongs.
+        l[261:358],   #GRCSFC_LABEL       Certificate identifier of a public key that can be used to export this symmetric key.
+    )
+    c.execute("INSERT INTO grcsfc VALUES(?, ?, ?)", v)
+    print("INFO: (05G2) General Resource ICSF Certificate Identifier Record processed.")
