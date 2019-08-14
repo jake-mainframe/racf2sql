@@ -95,6 +95,7 @@ def init_db(filename):
     init_grmfa(c)
     init_grmfp(c)
     init_grmpf(c)
+    init_grcsd(c)
 
     conn.commit()
     conn.close()
@@ -371,3 +372,6 @@ def init_grmfp(c):
 
 def init_grmpf(c):
     c.execute('CREATE TABLE grmpf (name TEXT, class_name TEXT, pol_factor TEXT)')
+
+def init_grcsd(c):
+    c.execute('CREATE TABLE grcsd (name TEXT, class_name TEXT, type TEXT, key TEXT, value TEXT)')

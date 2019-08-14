@@ -198,6 +198,8 @@ def process(l, c):
         process_grmfp(l, c)
     elif record_type == "05I1":
         process_grmpf(l, c)
+    elif record_type == "05J1":
+        process_grcsd(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1485,3 +1487,14 @@ def process_grmpf(l, c):
     )
     c.execute("INSERT INTO grmpf VALUES(?, ?, ?)", v)
     print("INFO: (05I1) General Resource MFA Policy Factors Record processed.")
+
+def process_grcsd(l, c):
+    v = (
+        l[5:251],     #GRCSD_NAME         General resource name as taken from the profile name.
+        l[252:260],   #GRCSD_CLASS_NAME   Name of the class to which the general resource profile belongs.
+        l[261:265],   #GRCSD_TYPE         Data type for the custom field. Valid values are CHAR, FLAG, HEX, NUM.
+        l[266:298],   #GRCSD_KEY          Custom field keyword; maximum length = 8.
+        l[299:1399],  #GRCSD_VALUE        Custom field value.
+    )
+    c.execute("INSERT INTO grcsd VALUES(?, ?, ?, ?, ?)", v)
+    print("INFO: (05J1) General Resource CSDATA Record processed.")
