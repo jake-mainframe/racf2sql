@@ -200,6 +200,8 @@ def process(l, c):
         process_grmpf(l, c)
     elif record_type == "05J1":
         process_grcsd(l, c)
+    elif record_type == "05K0" or record_type == "05k0":    #IBM's documentation has a lowercase K in places, which we might as well handle.
+        process_gridtp(l, c)
     else:
         print(f"WARN: Uncategorised/unknown line:\n\t{l}")
 
@@ -1498,3 +1500,17 @@ def process_grcsd(l, c):
     )
     c.execute("INSERT INTO grcsd VALUES(?, ?, ?, ?, ?)", v)
     print("INFO: (05J1) General Resource CSDATA Record processed.")
+
+def process_gridtp(l, c):
+    v = (
+        l[5:251],     #GRIDTP_NAME        General resource name as taken from the profile name.
+        l[252:260],   #GRIDTP_CLASS_NAME  Name of the class to which the general resource profile belongs, namely IDTDATA.
+        l[261:293],   #GRIDTP_SIG_TOKEN_NAME      The ICSF PKCS#11 token name.
+        l[294:302],   #GRIDTP_SIG_SEQ_NUM The ICSF PKCS#11 sequence number.
+        l[303:307],   #GRIDTP_SIG_CA      The ICSF PKCS#11 category.
+        l[308:340],   #GRIDTP_SIG_ALG     The signature algorithm.
+        l[341:351],   #GRIDTP_TIMEOUT     IDT timeout setting.
+        l[352:355],   #GRIDTP_ANYAPPL     Is the IDT allowed for any application? Valid values include "Yes" and "No".
+    )
+    c.execute("INSERT INTO gridtp VALUES(?, ?, ?, ?, ?, ?, ?, ?)", v)
+    print("INFO: (05K0) General Resource IDTPARMS Definition Record processed.")

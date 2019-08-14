@@ -96,6 +96,7 @@ def init_db(filename):
     init_grmfp(c)
     init_grmpf(c)
     init_grcsd(c)
+    init_gridtp(c)
 
     conn.commit()
     conn.close()
@@ -375,3 +376,6 @@ def init_grmpf(c):
 
 def init_grcsd(c):
     c.execute('CREATE TABLE grcsd (name TEXT, class_name TEXT, type TEXT, key TEXT, value TEXT)')
+
+def init_gridtp(c):
+    c.execute('CREATE TABLE gridtp (name TEXT, class_name TEXT, sig_token_name TEXT, sig_seq_num TEXT, sig_cat TEXT, sig_alg TEXT, timeout TEXT, anyappl TEXT)')
