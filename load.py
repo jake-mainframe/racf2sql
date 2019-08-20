@@ -1,4 +1,5 @@
 import sqlite3
+import click
 
 def load_racf(unload, db):
     conn = sqlite3.connect(db)
@@ -11,7 +12,7 @@ def load_racf(unload, db):
 
 def process(l, c):
     if len(l) < 4:
-        print(f"WARN: Unexpected short line:\n\t{l}")
+        click.secho(f"WARN: Unexpected short line:\n\t{l}", fg='red')
         return
 
     record_type = l[0:4]
@@ -207,7 +208,7 @@ def process(l, c):
     elif record_type == "1560":
         process_certn(l, c)
     else:
-        print(f"WARN: Uncategorised/unknown line:\n\t{l}")
+        click.secho(f"WARN: Uncategorised/unknown line:\n\t{l}", fg='red')
 
 def process_gpbd(l, c):
     v = (

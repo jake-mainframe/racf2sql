@@ -9,10 +9,9 @@ These scripts resolve this by translating the flat file into a SQLite database, 
 ## Usage
 
 1. Obtain the RACF unload database. See documentation on `IRRDBU00` for how to do this or consult your local Mainframe operator.
-2. In this directory, execute `run.py unload_file sqlite_file` where `unload_file` is your RACF unload flat file and `sqlite_file` is the file you want to output the database to.
-3. Enjoy.
-
-This script can currently *only* process one RACF unload file into one sqlite database, in one go. Interruptions and multiple files are not supported. This should be relatively easy to fix if necessary, but in the meantime, if you have multiple unload files (e.g. because of a split RACF database), concatenating them together into one really big file *should* work, but I haven't actually tried it.
+2. `git clone [this repo]`
+3. `pip install racf2sql`
+4. Run `racf2sql`
 
 ## Development
 
