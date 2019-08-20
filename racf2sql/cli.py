@@ -1,5 +1,5 @@
 import click
-from dispatch import populate_db
+from racf2sql.dispatch import populate_db
 
 @click.command()
 @click.argument('unload')

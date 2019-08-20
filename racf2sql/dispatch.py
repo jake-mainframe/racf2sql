@@ -1,7 +1,7 @@
 import sqlite3
 import click
-from init import init_db
-from load import load_racf
+from racf2sql.init import init_db
+from racf2sql.load import load_racf
 
 def populate_db(unload, db, append=False):
     if needs_init(db):
