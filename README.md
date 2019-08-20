@@ -10,8 +10,8 @@ These scripts resolve this by translating the flat file into a SQLite database, 
 
 1. Obtain the RACF unload database. See documentation on `IRRDBU00` for how to do this or consult your local Mainframe operator.
 2. `git clone [this repo]`
-3. `pip install racf2sql`
-4. Run `racf2sql`
+3. `pip install racf2sql/` (Note: requires a Python 3 environment, 3.6 or above strongly recommended)
+4. Run `racf2sql --help` for command line usage.
 
 ## Development
 
