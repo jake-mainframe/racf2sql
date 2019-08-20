@@ -6,12 +6,17 @@ Unfortunately, the flat file is not particularly easy to query. Scripts exist th
 
 These scripts resolve this by translating the flat file into a SQLite database, which is an easily queryable standard.
 
-## Usage
+## Requirements
 
-1. Obtain the RACF unload database. See documentation on `IRRDBU00` for how to do this or consult your local Mainframe operator.
-2. `git clone [this repo]`
-3. `pip install racf2sql/` (Note: requires a Python 3 environment, 3.6 or above strongly recommended)
-4. Run `racf2sql --help` for command line usage.
+A full Python 3.6 environment with `pip` is required.
+
+## Installation / Usage
+
+- Obtain the RACF unload database. See documentation on `IRRDBU00` for how to do this or consult your local Mainframe operator.
+- `git clone [this repo]`
+- `cd [this repo]`
+- `pip install .`
+-  Run `racf2sql --help` for command line usage.
 
 ## Development
 
@@ -19,8 +24,8 @@ The format of the script is almost entirely based on IBM's documentation on the 
 
 In order to amend the script to fix an issue with the processing of a record or in order to implement a new record type, the following steps should be taken:
 
-1. In `init.py` identify where the record type's `init_` function is called, and modify or create it appropriately. (Note: the records are ordered in the same way they appear in IBM's documentation for added readability.)
-2. In `load.py` identify where the record type's `process_` function is called, and modify or create it appropriately. (Note: the records and their fields are also ordered the same as in the documentation).
+- In `init.py` identify where the record type's `init_` function is called, and modify or create it appropriately. (Note: the records are ordered in the same way they appear in IBM's documentation for added readability.)
+- In `load.py` identify where the record type's `process_` function is called, and modify or create it appropriately. (Note: the records and their fields are also ordered the same as in the documentation).
 
 **NOTE:** The substrings used in `load.py` have their start index **one lower than IBM's documentation**. This is intentional, and is the case because of differences between IBM's documentation and how Python processes substrings.
 
