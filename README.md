@@ -6,6 +6,10 @@ Unfortunately, the flat file is not particularly easy to query. Scripts exist th
 
 These scripts resolve this by translating the flat file into a SQLite database, which is an easily queryable standard.
 
+## Credit
+Kajetan Champlewski
+
+
 ## Requirements
 
 A full Python 3.6 environment with `pip` is required.
@@ -36,3 +40,7 @@ Specifically:
 - Each column nane is the same as the name of the field in IBM's docs, without the table prefix.
 
 So, if IBM defined a record type with a field called `ASDF_POTATO`, then that field would go into column `potato` in table `asdf`. This hopefully means that users can mostly just use IBM's documentation to figure out what queries they want to make. The only exception is column names like `primary` which get an underscore prefixed (e.g. becomes `_primary`) so as to avoid conflicts with SQL keywords.
+
+
+
+
