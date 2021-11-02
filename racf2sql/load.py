@@ -4,7 +4,7 @@ import click
 def load_racf(unload, db):
     conn = sqlite3.connect(db)
     c = conn.cursor()
-    with open(unload) as fp:
+    with open(unload, encoding="utf8", errors='ignore') as fp:
         for line in fp:
             process(line, c)
     conn.commit()
@@ -571,7 +571,6 @@ def process_usopr(l, c):
         l[120:124].strip(),     #USOPR_SESS         Are user IDs displayed with each TSO initiation and termination?
         l[125:129].strip(),     #USOPR_SESST        Are user IDs and timestamps displayed with each TSO initiation and termination?
         l[130:134].strip(),     #USOPR_STATUS       Are data set names and dispositions displayed with each data set that is freed?
-        l[135:139].strip(),     #USOPR_ROUTECODE001 Is this console enabled for route code 001?
         l[135:139].strip(),     #USOPR_ROUTECODE001 Is this console enabled for route code 001
         l[140:144].strip(),     #USOPR_ROUTECODE002 Is this console enabled for route code 002
         l[145:149].strip(),     #USOPR_ROUTECODE003 Is this console enabled for route code 003
@@ -712,7 +711,7 @@ def process_usopr(l, c):
         l[840:844].strip(),     #USOPR_INT          Is this operator to receive messages that are directed to console ID zero?
         l[845:849].strip(),     #USOPR_UNKN         Is this operator to receive messages which are directed to unknown console IDs?
     )
-    c.execute("INSERT INTO usopr VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
+    c.execute("INSERT INTO usopr VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", v)
     print("INFO: (0250) User OPERPARM Data Record processed.")
 
 def process_usoprp(l, c):
@@ -972,7 +971,7 @@ def process_dsinstd(l, c):
 def process_dsdfp(l, c):
     v = (
         l[5:49].strip(),        #DSDFP_NAME         Data set name as taken from the profile name.
-        l[50:56].strip(),       #DSDFP_VOL          Volume upon which this data set resides. Blank if the profile is generic, and *MODEL if the profile is a model profile. 
+        l[50:56].strip(),       #DSDFP_VOL          Volume upon which this data set resides. Blank if the profile is generic, and *MODEL if the profile is a model profile.
         l[57:65].strip(),       #DSDFP_RESOWNER_ID  The resource owner of the data set.
         l[66:130].strip(),      #DSDFP_DATAKEY      The label of the ICSF key that is used to encrypt the data of any newly allocated data set.
     )
